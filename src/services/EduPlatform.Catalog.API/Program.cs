@@ -1,3 +1,4 @@
+using EduPlatform.Catalog.API.Features.Categories;
 using EduPlatform.Catalog.API.Options;
 using EduPlatform.Catalog.API.Repositories;
 
@@ -11,6 +12,8 @@ builder.Services.AddOptionExt();
 //connect mongodb  
 builder.Services.AddMongoDbConfigureExt();
 var app = builder.Build();
+
+app.AddCategoryGroupEndpointExt();
 
 if (app.Environment.IsDevelopment())
 {
