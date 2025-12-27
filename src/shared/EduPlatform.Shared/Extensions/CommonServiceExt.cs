@@ -13,6 +13,8 @@ public static class CommonServiceExt
         
         services.AddFluentValidationAutoValidation();
         services.AddValidatorsFromAssemblyContaining(assembly);
+        
+        services.AddAutoMapper(assembly);
         return services;
     }
 }

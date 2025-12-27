@@ -1,3 +1,4 @@
+using AutoMapper;
 using EduPlatform.Catalog.API.Features.Categories.Create;
 using EduPlatform.Catalog.API.Repositories;
 using EduPlatform.Shared;
@@ -10,14 +11,14 @@ namespace EduPlatform.Catalog.API.Features.Categories.GetAll;
 
 public class GetAllCategoryQuery : IRequest<ServiceResult<List<CategoryDto>>>;
 
-public class GetAllCategoryQueryHandler(AppDbContext context)
+public class GetAllCategoryQueryHandler(AppDbContext context,IMapper mapper)
     : IRequestHandler<GetAllCategoryQuery, ServiceResult<List<CategoryDto>>>
 {
     public async Task<ServiceResult<List<CategoryDto>>> Handle(GetAllCategoryQuery request,
         CancellationToken cancellationToken)
     {
         var categories = await context.Categories.ToListAsync(cancellationToken);
-        var categoryDto = categories.Select(c => new CategoryDto(c.Id, c.Name)).ToList();
+        var categoryDto = mapper.Map<List<CategoryDto>>(categories);
         return ServiceResult<List<CategoryDto>>.SuccessAsOk(categoryDto);
     }
 }
