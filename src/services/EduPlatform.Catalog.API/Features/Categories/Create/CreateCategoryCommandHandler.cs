@@ -15,7 +15,7 @@ public class CreateCategoryCommandHandler(AppDbContext context)
     {
         var existCategory = await context.Categories.AnyAsync(t => t.Name == request.Name, cancellationToken);
         if (existCategory)
-            ServiceResult<CreateCategoryResponse>.Error("Category already exists",
+            return ServiceResult<CreateCategoryResponse>.Error("Category already exists",
                 $"The category name {request.Name} already exist", HttpStatusCode.BadRequest);
 
         var category = new Category
