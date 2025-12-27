@@ -1,3 +1,5 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace EduPlatform.Shared.Extensions;
@@ -8,6 +10,9 @@ public static class CommonServiceExt
     {
         services.AddHttpContextAccessor();
         services.AddMediatR(x => x.RegisterServicesFromAssemblyContaining(assembly));
+        
+        services.AddFluentValidationAutoValidation();
+        services.AddValidatorsFromAssemblyContaining(assembly);
         return services;
     }
 }
