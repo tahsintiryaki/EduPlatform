@@ -1,0 +1,6 @@
+@EduPlatform.Basket.API_HostAddress = http://localhost:5228
+
+GET {{EduPlatform.Basket.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
