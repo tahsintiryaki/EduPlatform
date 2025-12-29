@@ -1,0 +1,9 @@
+global using MediatR;
+global using EduPlatform.Shared;
+global using MassTransit;
+global using MediatR;
+global using Microsoft.EntityFrameworkCore;
+global using System.Net;
+global using FluentValidation;
+global using AutoMapper;
+global using EduPlatform.Shared.Extensions;
