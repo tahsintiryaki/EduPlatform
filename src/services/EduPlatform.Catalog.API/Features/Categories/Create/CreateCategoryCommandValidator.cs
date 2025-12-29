@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace EduPlatform.Catalog.API.Features.Categories.Create;
 
 public class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCommand>

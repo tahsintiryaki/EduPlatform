@@ -1,5 +1,3 @@
-using AutoMapper;
-
 namespace EduPlatform.Catalog.API.Features.Categories;
 
 public class CategoryMapping:Profile

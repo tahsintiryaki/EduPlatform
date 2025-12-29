@@ -1,9 +1,4 @@
-using System.Net;
-using AutoMapper;
 using EduPlatform.Catalog.API.Repositories;
-using EduPlatform.Shared;
-using EduPlatform.Shared.Extensions;
-using MediatR;
 
 namespace EduPlatform.Catalog.API.Features.Categories.GetById;
 
@@ -32,7 +27,8 @@ public static class GetCategoryByIdEndpoint
     public static RouteGroupBuilder GetByIdCategoryGroupItemEndpoint(this RouteGroupBuilder group)
     {
         group.MapGet("/{id:guid}", async (IMediator mediator, Guid id) =>
-            (await mediator.Send(new GetCategoryByIdQuery(id))).ToGenericResult());
+            (await mediator.Send(new GetCategoryByIdQuery(id))).ToGenericResult())
+            .MapToApiVersion(1, 0);
         return group;
     }
 }

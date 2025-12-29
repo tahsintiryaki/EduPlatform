@@ -1,10 +1,12 @@
 @baseAddress = http://localhost:5083
-@categoryId=08de457d-71a8-8a34-8eca-40e8eaa80000
-GET {{baseAddress}}/api/categories
+@categoryId=08de46bf-88da-ccd8-8eca-40e8eaa80000
+@courseId=08de46bf-88f5-ecfc-8eca-40e8eaa80000
+@userId=eaa80000-40e8-8eca-e8e2-08de46bf88f5
+GET {{baseAddress}}/api/v1/categories
 Accept: application/json
 
 ###
-POST {{baseAddress}}/api/categories
+POST {{baseAddress}}/api/v1/categories
 Accept: application/json
 Content-Type: application/json
 
@@ -12,7 +14,44 @@ Content-Type: application/json
   "name": "Go Eğitimleri"
 }
 ###
-GET {{baseAddress}}/api/categories/{{categoryId}}
+GET {{baseAddress}}/api/v1/categories/{{categoryId}}
 Accept: application/json
+###
+POST {{baseAddress}}/api/v1/courses
+Accept: application/json
+Content-Type: application/json
 
+{
+  "name": "New Course 1",
+  "description": "This is a new course",
+  "price": 99.99,
+  "categoryId": "{{categoryId}}"
+}
+###
+GET {{baseAddress}}/api/v1/courses
+Accept: application/json
+###
+GET {{baseAddress}}/api/v1/courses/{{courseId}}
+Accept: application/json
+###
+}
+###
+PUT {{baseAddress}}/api/v1/courses
+Accept: application/json
+Content-Type: application/json
+
+{
+  "Id": "{{courseId}}",
+  "name": "New Course 33",
+  "description": "This is a new course 33",
+  "price": 199.99,
+  "imageUrl": "",
+  "categoryId": "{{categoryId}}"
+}
+###
+DELETE {{baseAddress}}/api/v1.0/courses/{{courseId}}
+Accept: application/json
+###
+GET {{baseAddress}}/api/v1.0/courses/user/{{userId}}
+Accept: application/json
 ###

@@ -1,7 +1,5 @@
 using EduPlatform.Shared.Extensions;
 using EduPlatform.Shared.Filters;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
 
 namespace EduPlatform.Catalog.API.Features.Categories.Create;
 
@@ -11,6 +9,7 @@ public static class CreateCategoryEndpoint
     {
         group.MapPost("/", async (CreateCategoryCommand command, IMediator mediator) =>
             (await mediator.Send(command)).ToGenericResult())
+            .MapToApiVersion(1, 0)
             .AddEndpointFilter<ValidationFilter<CreateCategoryCommand>>();
         return group;
     }
