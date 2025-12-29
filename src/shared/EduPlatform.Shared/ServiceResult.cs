@@ -1,11 +1,15 @@
 using System.Net;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using MediatR;
 using Refit;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace EduPlatform.Shared;
 
+public interface IRequestByServiceResult<T> : IRequest<ServiceResult<T>>;
+
+public interface IRequestByServiceResult : IRequest<ServiceResult>;
 public class ServiceResult
 {
     [JsonIgnore] public HttpStatusCode Status { get; set; }
@@ -35,6 +39,7 @@ public class ServiceResult
             }
         };
     }
+
     public static ServiceResult Error(ProblemDetails problemDetails, HttpStatusCode status)
     {
         return new ServiceResult
@@ -96,6 +101,7 @@ public class ServiceResult
             Status = exception.StatusCode
         };
     }
+
     public static ServiceResult ErrorFromValidation(IDictionary<string, object?> errors)
     {
         return new ServiceResult
