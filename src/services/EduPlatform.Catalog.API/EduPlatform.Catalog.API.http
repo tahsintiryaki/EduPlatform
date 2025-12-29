@@ -1,5 +1,5 @@
 @baseAddress = http://localhost:5083
-
+@categoryId=08de457d-71a8-8a34-8eca-40e8eaa80000
 GET {{baseAddress}}/api/categories
 Accept: application/json
 
@@ -11,4 +11,8 @@ Content-Type: application/json
 {
   "name": "Go Eğitimleri"
 }
+###
+GET {{baseAddress}}/api/categories/{{categoryId}}
+Accept: application/json
 
+###
