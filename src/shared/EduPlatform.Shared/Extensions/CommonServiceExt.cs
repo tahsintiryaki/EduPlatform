@@ -1,3 +1,4 @@
+using EduPlatform.Shared.Services;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +15,7 @@ public static class CommonServiceExt
         services.AddFluentValidationAutoValidation();
         services.AddValidatorsFromAssemblyContaining(assembly);
         
+        services.AddScoped<IIdentityService, IdentityService>();
         services.AddAutoMapper(assembly);
         return services;
     }
