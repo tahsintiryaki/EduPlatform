@@ -8,10 +8,17 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.11"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.11">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        
+        
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\EduPlatform.Order.Application\EduPlatform.Order.Application.csproj" />
+      <ProjectReference Include="..\EduPlatform.Order.Persistence\EduPlatform.Order.Persistence.csproj" />
     </ItemGroup>
 
 </Project>
