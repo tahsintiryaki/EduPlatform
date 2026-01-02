@@ -10,4 +10,8 @@
       <ProjectReference Include="..\EduPlatform.Order.Domain\EduPlatform.Order.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Contracts\" />
+    </ItemGroup>
+
 </Project>

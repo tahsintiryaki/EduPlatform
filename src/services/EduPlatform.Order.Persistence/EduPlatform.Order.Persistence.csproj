@@ -14,9 +14,10 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
-    
-    <ItemGroup>
-      <ProjectReference Include="..\EduPlatform.Order.Domain\EduPlatform.Order.Domain.csproj" />
-    </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\EduPlatform.Order.Application\EduPlatform.Order.Application.csproj" />
+    </ItemGroup>
+    
+    
 </Project>
