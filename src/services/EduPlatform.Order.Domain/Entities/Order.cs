@@ -50,24 +50,24 @@ public class Order : BaseEntity<Guid>
         };
     }
 
-    public static Order CreateUnPaidOrder(Guid buyerId, float? disCountRate)
-    {
-        return new Order
-        {
-            Id = Guid.CreateVersion7(),
-            Code = GenerateCode(),
-            BuyerId = buyerId,
-            Created = DateTime.Now,
-            Status = OrderStatus.WaitingForPayment,
-            DiscountRate = disCountRate,
-            TotalPrice = 0
-        };
-    }
+    // public static Order CreateUnPaidOrder(Guid buyerId, float? disCountRate)
+    // {
+    //     return new Order
+    //     {
+    //         Id = Guid.CreateVersion7(),
+    //         Code = GenerateCode(),
+    //         BuyerId = buyerId,
+    //         Created = DateTime.Now,
+    //         Status = OrderStatus.WaitingForPayment,
+    //         DiscountRate = disCountRate,
+    //         TotalPrice = 0
+    //     };
+    // }
 
     public void AddOrderItem(Guid productId, string productName, decimal unitPrice)
     {
         var orderItem = new OrderItem();
-
+        if (DiscountRate.HasValue) unitPrice -= unitPrice * (decimal)DiscountRate / 100;
         orderItem.SetItem(productId, productName, unitPrice);
         OrderItems.Add(orderItem);
 
