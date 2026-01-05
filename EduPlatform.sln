@@ -46,6 +46,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduPlatform.Order.Domain", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduPlatform.Order.Persistence", "src\services\EduPlatform.Order.Persistence\EduPlatform.Order.Persistence.csproj", "{9E3F7E98-9DC9-464C-B9CF-412CC38F856F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "payment", "payment", "{AA9D6CFD-FD02-4BB8-BBF2-8C3FF4E25BA8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduPlatform.Payment.API", "src\services\EduPlatform.Payment.API\EduPlatform.Payment.API.csproj", "{8F99E42D-AF60-41DA-BA8A-ABCC2B0299F6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +75,8 @@ Global
 		{A2B298A5-F08E-433A-9A29-F44534327518} = {B15DCB15-DA1F-4045-9F8D-EA1A42E59D2A}
 		{C43D832A-56F9-4256-9125-DBE2FC2BE6BF} = {B15DCB15-DA1F-4045-9F8D-EA1A42E59D2A}
 		{9E3F7E98-9DC9-464C-B9CF-412CC38F856F} = {40B68F18-FEF2-4ABC-9A54-C5D834664139}
+		{AA9D6CFD-FD02-4BB8-BBF2-8C3FF4E25BA8} = {BC6A57F0-2638-43EA-95C5-60373C271C8F}
+		{8F99E42D-AF60-41DA-BA8A-ABCC2B0299F6} = {AA9D6CFD-FD02-4BB8-BBF2-8C3FF4E25BA8}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{17EE83FB-72DC-4932-BDEE-E12CE6E5505A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -109,5 +115,9 @@ Global
 		{9E3F7E98-9DC9-464C-B9CF-412CC38F856F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E3F7E98-9DC9-464C-B9CF-412CC38F856F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E3F7E98-9DC9-464C-B9CF-412CC38F856F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F99E42D-AF60-41DA-BA8A-ABCC2B0299F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F99E42D-AF60-41DA-BA8A-ABCC2B0299F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F99E42D-AF60-41DA-BA8A-ABCC2B0299F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F99E42D-AF60-41DA-BA8A-ABCC2B0299F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
