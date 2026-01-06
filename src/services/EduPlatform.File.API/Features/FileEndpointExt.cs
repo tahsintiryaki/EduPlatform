@@ -10,7 +10,7 @@ public static class FileEndpointExt
     {
         app.MapGroup("api/v{version:apiVersion}/files").WithTags("files").WithApiVersionSet(apiVersionSet)
             .UploadFileGroupItemEndpoint()
-            .DeleteFileGroupItemEndpoint();
+            .DeleteFileGroupItemEndpoint().RequireAuthorization();
             
     }
 }

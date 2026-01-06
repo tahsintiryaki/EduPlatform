@@ -1,7 +1,50 @@
+﻿#region
+
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
+
+#endregion
+
 namespace EduPlatform.Shared.Services;
 
-public class IdentityService:IIdentityService
+internal class IdentityService(IHttpContextAccessor httpContextAccessor) : IIdentityService
 {
-    public Guid UserId => Guid.Parse("eaa80000-40e8-8eca-e8e2-08de46bf88f5");
-    public string UserName => "Tahsin14";
+    public Guid UserId
+    {
+        get
+        {
+            if (!httpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)
+                throw new UnauthorizedAccessException("User is not authenticated.");
+
+            return Guid.Parse(
+                httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(c =>
+                    c.Type == ClaimTypes.NameIdentifier)!.Value!);
+        }
+    }
+
+    public string UserName
+    {
+        get
+        {
+            if (!httpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)
+                throw new UnauthorizedAccessException("User is not authenticated.");
+            
+            return httpContextAccessor.HttpContext.User
+                .FindFirst("preferred_username")?.Value!;
+        }
+    }
+
+    public List<string> Roles
+    {
+        get
+        {
+            if (!httpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)
+                throw new UnauthorizedAccessException("User is not authenticated.");
+
+
+            return httpContextAccessor.HttpContext!.User.Claims.Where(x => x.Type == ClaimTypes.Role)
+                .Select(x => x.Value!)
+                .ToList();
+        }
+    }
 }

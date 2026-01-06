@@ -14,7 +14,7 @@ builder.Services.AddOptionExt();//mongodb connection value  validate
 builder.Services.AddMongoDbConfigureExt();//connect mongodb  
 builder.Services.AddCommonServiceExt(typeof(CatalogAssembly)); //
 builder.Services.AddVersioningExt();
-
+builder.Services.AddAuthenticationAndAuthorizationExt(builder.Configuration);
 var app = builder.Build();
 
 app.AddSeedDataExt().ContinueWith(x =>
@@ -31,4 +31,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseAuthentication();
+app.UseAuthorization();
 app.Run();
