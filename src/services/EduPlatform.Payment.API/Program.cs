@@ -1,8 +1,8 @@
 using EduPlatform.Payment.API;
+using EduPlatform.Payment.API.Feature.Payments;
 using EduPlatform.Payment.API.Repositories;
 using EduPlatform.Shared.Extensions;
 using Microsoft.EntityFrameworkCore;
-using UdemyNewMicroservice.Payment.Api.Feature.Payments;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +13,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddCommonServiceExt(typeof(PaymentAssembly));
+builder.Services.AddAuthenticationAndAuthorizationExt(builder.Configuration);
+
 builder.Services.AddVersioningExt();
 builder.Services.AddCommonServiceExt(typeof(PaymentAssembly));
 builder.Services.AddDbContext<AppDbContext>(options => { options.UseInMemoryDatabase("payment-in-memory-db"); });
@@ -28,6 +30,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.Run();
 
