@@ -1,3 +1,4 @@
+using EduPlatform.Bus;
 using EduPlatform.Discount.API;
 using EduPlatform.Discount.API.Features.Discounts;
 using EduPlatform.Discount.API.Options;
@@ -13,7 +14,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddOptionExt();
 builder.Services.AddMongoDbConfigureExt();
 
-builder.Services.AddCommonServiceExt(typeof(DiscountAssembly)); //
+builder.Services.AddCommonServiceExt(typeof(DiscountAssembly)); 
+builder.Services.AddCommonMasstransitExt(builder.Configuration);
 builder.Services.AddVersioningExt();
 builder.Services.AddAuthenticationAndAuthorizationExt(builder.Configuration);
 var app = builder.Build();

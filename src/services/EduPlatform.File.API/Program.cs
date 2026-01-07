@@ -1,3 +1,4 @@
+using EduPlatform.Bus;
 using EduPlatform.File.API;
 using EduPlatform.File.API.Features;
 using EduPlatform.Shared.Extensions;
@@ -13,6 +14,7 @@ builder.Services.AddSingleton<IFileProvider>(
     new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")));
 
 builder.Services.AddCommonServiceExt(typeof(FileAssembly));
+builder.Services.AddCommonMasstransitExt(builder.Configuration);
 builder.Services.AddVersioningExt();
 var app = builder.Build();
 

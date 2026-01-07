@@ -1,3 +1,4 @@
+using EduPlatform.Bus;
 using EduPlatform.Order.API.Endpoints.Orders;
 using EduPlatform.Order.Application;
 using EduPlatform.Order.Application.Contracts.Repositories;
@@ -16,6 +17,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCommonServiceExt(typeof(OrderApplicationAssembly));
+builder.Services.AddCommonMasstransitExt(builder.Configuration);
  
 
 builder.Services.AddDbContext<AppDbContext>(option =>
