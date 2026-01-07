@@ -22,7 +22,7 @@ public class CreatePaymentCommandHandler(
     {
         var userId = identityService.UserId;
         var userName = identityService.UserName;
-        // var roles = identityService.Roles;
+        var roles = identityService.Roles;
 
 
         var (isSuccess, errorMessage) = await ExternalPaymentProcessAsync(request.CardNumber,
