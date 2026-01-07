@@ -7,12 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\shared\EduPlatform.Bus\EduPlatform.Bus.csproj" />
-      <ProjectReference Include="..\EduPlatform.Order.Domain\EduPlatform.Order.Domain.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Contracts\" />
+      <PackageReference Include="MassTransit.AspNetCore" Version="7.3.1" />
+      <PackageReference Include="MassTransit.RabbitMQ" Version="9.0.0" />
     </ItemGroup>
 
 </Project>

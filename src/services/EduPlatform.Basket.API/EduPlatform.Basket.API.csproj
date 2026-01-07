@@ -13,6 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\shared\EduPlatform.Bus\EduPlatform.Bus.csproj" />
       <ProjectReference Include="..\..\shared\EduPlatform.Shared\EduPlatform.Shared.csproj" />
     </ItemGroup>
 
