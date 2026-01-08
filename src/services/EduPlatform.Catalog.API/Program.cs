@@ -14,7 +14,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddOptionExt();//mongodb connection value  validate
 builder.Services.AddMongoDbConfigureExt();//connect mongodb  
 builder.Services.AddCommonServiceExt(typeof(CatalogAssembly)); 
-builder.Services.AddCommonMasstransitExt(builder.Configuration);
+builder.Services.AddCatalogMasstransitExt(builder.Configuration);
 builder.Services.AddVersioningExt();
 builder.Services.AddAuthenticationAndAuthorizationExt(builder.Configuration);
 var app = builder.Build();

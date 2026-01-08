@@ -17,7 +17,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCommonServiceExt(typeof(OrderApplicationAssembly));
-builder.Services.AddCommonMasstransitExt(builder.Configuration);
+
  
 
 builder.Services.AddDbContext<AppDbContext>(option =>
@@ -30,7 +30,7 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddVersioningExt();
-
+builder.Services.AddRabbitMqBusExt(builder.Configuration);
 builder.Services.AddAuthenticationAndAuthorizationExt(builder.Configuration);
 var app = builder.Build();
 app.AddOrderGroupEndpointExt(app.AddVersionSetExt());

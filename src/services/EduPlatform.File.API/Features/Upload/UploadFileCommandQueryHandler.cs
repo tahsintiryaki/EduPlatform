@@ -30,11 +30,7 @@ public class UploadFileCommandHandler(IFileProvider fileProvider)
         var uploadPath = Path.Combine(fileProvider.GetFileInfo("files").PhysicalPath!, newFileName);
         
         await using var stream = new FileStream(uploadPath, FileMode.Create);
-
-
         await request.File.CopyToAsync(stream, cancellationToken);
-
-
         var response = new UploadFileCommandResponse(newFileName, $"files/{newFileName}", request.File.FileName);
 
         return ServiceResult<UploadFileCommandResponse>.SuccessAsCreated(response, response.FilePath);

@@ -14,7 +14,8 @@ builder.Services.AddSingleton<IFileProvider>(
     new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")));
 
 builder.Services.AddCommonServiceExt(typeof(FileAssembly));
-builder.Services.AddCommonMasstransitExt(builder.Configuration);
+builder.Services.AddAuthenticationAndAuthorizationExt(builder.Configuration);
+builder.Services.AddFileMasstransitExt(builder.Configuration);
 builder.Services.AddVersioningExt();
 var app = builder.Build();
 

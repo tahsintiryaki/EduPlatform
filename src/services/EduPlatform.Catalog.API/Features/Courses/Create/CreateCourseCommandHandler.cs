@@ -1,8 +1,12 @@
+using EduPlatform.Bus.Command;
 using EduPlatform.Catalog.API.Repositories;
 
 namespace EduPlatform.Catalog.API.Features.Courses.Create;
 
-public class CreateCourseCommandHandler(AppDbContext context, IMapper mapper)
+public class CreateCourseCommandHandler(
+    AppDbContext context,
+    IMapper mapper,
+    ISendEndpointProvider sendEndpointProvider)
     : IRequestHandler<CreateCourseCommand, ServiceResult<Guid>>
 {
     public async Task<ServiceResult<Guid>> Handle(CreateCourseCommand request, CancellationToken cancellationToken)
@@ -30,6 +34,22 @@ public class CreateCourseCommandHandler(AppDbContext context, IMapper mapper)
         };
         await context.Courses.AddAsync(newCourse);
         await context.SaveChangesAsync(cancellationToken);
+        if (request.Picture is not null)
+        {
+            using var memoryStream = new MemoryStream();
+            await request.Picture.CopyToAsync(memoryStream, cancellationToken);
+            var pictureBytes = memoryStream.ToArray();
+
+            UploadCoursePictureCommand uploadCoursePictureCommand =
+                new(newCourse.Id, pictureBytes, request.Picture.FileName);
+            
+            var endpoint = await sendEndpointProvider.GetSendEndpoint(
+                new Uri("queue:file-upload-course-picture-command"));
+
+            await endpoint.Send(uploadCoursePictureCommand, cancellationToken);
+            Console.WriteLine("publisher UploadCoursePictureCommand from CatalogService");
+        }
+
         return ServiceResult<Guid>.SuccessAsCreated(newCourse.Id, $"/api/courses/{newCourse.Id}");
     }
 }
