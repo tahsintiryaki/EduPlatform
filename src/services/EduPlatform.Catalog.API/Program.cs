@@ -1,3 +1,4 @@
+using EduPlatform.Bus;
 using EduPlatform.Catalog.API;
 using EduPlatform.Catalog.API.Features.Categories;
 using EduPlatform.Catalog.API.Features.Courses;
@@ -12,7 +13,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddOptionExt();//mongodb connection value  validate
 builder.Services.AddMongoDbConfigureExt();//connect mongodb  
-builder.Services.AddCommonServiceExt(typeof(CatalogAssembly)); //
+builder.Services.AddCommonServiceExt(typeof(CatalogAssembly)); 
+builder.Services.AddCatalogMasstransitExt(builder.Configuration);
 builder.Services.AddVersioningExt();
 builder.Services.AddAuthenticationAndAuthorizationExt(builder.Configuration);
 var app = builder.Build();

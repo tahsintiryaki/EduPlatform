@@ -21,7 +21,7 @@ public static class GetAllPaymentsByUserIdEndpoint
             .Produces(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
-            .RequireAuthorization("ClientCredential");
+            .RequireAuthorization("Password");
 
         return group;
     }

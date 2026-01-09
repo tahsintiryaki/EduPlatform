@@ -1,3 +1,4 @@
+using EduPlatform.Bus;
 using EduPlatform.Payment.API;
 using EduPlatform.Payment.API.Feature.Payments;
 using EduPlatform.Payment.API.Repositories;
@@ -6,13 +7,12 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddCommonServiceExt(typeof(PaymentAssembly));
+
 builder.Services.AddAuthenticationAndAuthorizationExt(builder.Configuration);
 
 builder.Services.AddVersioningExt();

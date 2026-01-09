@@ -16,7 +16,7 @@ public static class AuthenticationExt
     public static IServiceCollection AddAuthenticationAndAuthorizationExt(this IServiceCollection services,
         IConfiguration configuration)
     {
-        var identityOptions = configuration.GetSection(nameof(IdentityOption)).Get<IdentityOption>();
+        var identityOptions = configuration.GetSection(nameof(IdentityOption)).Get<IdentityOption>()!;
 
 
         services.AddAuthentication().AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
