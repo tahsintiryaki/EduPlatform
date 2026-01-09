@@ -45,6 +45,15 @@ public static class MasstransitConfigurationExt
                 });
                
                 cfg.ConfigureEndpoints(ctx);
+                
+                cfg.UseCircuitBreaker(configurator =>
+                {
+                    configurator.TrackingPeriod = TimeSpan.FromMinutes(1);
+                    configurator.TripThreshold = 15;
+                    configurator.ActiveThreshold = 10;
+                    configurator.ResetInterval = TimeSpan.FromMinutes(5);
+                });
+                cfg.UseMessageRetry(r => r.Immediate(5));
             });
         });
         return services;
