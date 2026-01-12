@@ -6,4 +6,4 @@ using EduPlatform.Shared;
 
 namespace EduPlatform.Payment.API.Feature.Payments.GetStatus;
 
-public record GetPaymentStatusRequest(string orderCode) : IRequestByServiceResult<GetPaymentStatusResponse>;
+public record GetPaymentStatusRequest(string OrderCode) : IRequestByServiceResult<GetPaymentStatusResponse>;

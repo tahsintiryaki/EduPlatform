@@ -15,7 +15,7 @@ public class GetPaymentStatusQueryHandler(AppDbContext context)
     public async Task<ServiceResult<GetPaymentStatusResponse>> Handle(GetPaymentStatusRequest request,
         CancellationToken cancellationToken)
     {
-        var payment = await context.Payments.FirstOrDefaultAsync(x => x.OrderCode == request.orderCode,
+        var payment = await context.Payments.FirstOrDefaultAsync(x => x.OrderCode == request.OrderCode,
             cancellationToken);
 
         if (payment is null)
