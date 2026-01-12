@@ -1,8 +1,5 @@
 ﻿#region
-
 using EduPlatform.Shared;
-using UdemyNewMicroservice.Payment.Api.Feature.Payments.Create;
-
 #endregion
 
 namespace EduPlatform.Payment.API.Feature.Payments.Create;

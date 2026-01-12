@@ -1,13 +1,18 @@
 using EduPlatform.Bus;
 using EduPlatform.Order.API.Endpoints.Orders;
 using EduPlatform.Order.Application;
+using EduPlatform.Order.Application.BackgroundServices;
+using EduPlatform.Order.Application.Contracts.Refit;
+using EduPlatform.Order.Application.Contracts.Refit.PaymentService;
 using EduPlatform.Order.Application.Contracts.Repositories;
 using EduPlatform.Order.Application.UnitOfWork;
 using EduPlatform.Order.Persistence;
 using EduPlatform.Order.Persistence.Repositories;
 using EduPlatform.Order.Persistence.UnitOfWork;
 using EduPlatform.Shared.Extensions;
+using EduPlatform.Shared.Options;
 using Microsoft.EntityFrameworkCore;
+using Refit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +37,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddVersioningExt();
 builder.Services.AddRabbitMqBusExt(builder.Configuration);
 builder.Services.AddAuthenticationAndAuthorizationExt(builder.Configuration);
+builder.Services.AddRefitConfigurationExt(builder.Configuration);
+builder.Services.AddHostedService<CheckPaymentStatusOrderBackgroundService>();
+
 var app = builder.Build();
 app.AddOrderGroupEndpointExt(app.AddVersionSetExt());
 // Configure the HTTP request pipeline.
