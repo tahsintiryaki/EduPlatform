@@ -5,7 +5,6 @@ using EduPlatform.Payment.API.Repositories;
 using EduPlatform.Shared;
 using EduPlatform.Shared.Services;
 using MediatR;
-using UdemyNewMicroservice.Payment.Api.Feature.Payments.Create;
 
 #endregion
 

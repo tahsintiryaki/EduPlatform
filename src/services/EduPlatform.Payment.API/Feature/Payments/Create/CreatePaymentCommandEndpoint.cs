@@ -1,9 +1,7 @@
 ﻿#region
-
 using EduPlatform.Shared.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-
 #endregion
 
 namespace EduPlatform.Payment.API.Feature.Payments.Create;

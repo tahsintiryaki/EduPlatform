@@ -5,7 +5,7 @@ using FluentValidation;
 
 #endregion
 
-namespace UdemyNewMicroservice.Payment.Api.Feature.Payments.Create;
+namespace EduPlatform.Payment.Api.Feature.Payments.Create;
 
 public class CreatePaymentCommandValidator : AbstractValidator<CreatePaymentCommand>
 {
