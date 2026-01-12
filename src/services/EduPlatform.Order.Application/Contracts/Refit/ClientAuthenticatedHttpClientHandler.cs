@@ -15,6 +15,7 @@ internal class ClientAuthenticatedHttpClientHandler(
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
         CancellationToken cancellationToken)
     {
+        //Eğer istekte token varsa yeni bir token ekleme.
         if (request.Headers.Authorization is not null) return await base.SendAsync(request, cancellationToken);
 
 

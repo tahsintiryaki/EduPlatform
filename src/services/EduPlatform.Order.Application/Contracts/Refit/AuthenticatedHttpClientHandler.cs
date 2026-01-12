@@ -12,6 +12,7 @@ internal class AuthenticatedHttpClientHandler(IHttpContextAccessor httpContextAc
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
         CancellationToken cancellationToken)
     {
+        //İstek order üzerinde giderse HttpContext dolu olur fakat istek background üzerindneb başlarsa context null olur.
         if (httpContextAccessor.HttpContext is null) return await base.SendAsync(request, cancellationToken);
 
         if (!httpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)

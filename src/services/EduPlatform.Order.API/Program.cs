@@ -1,6 +1,7 @@
 using EduPlatform.Bus;
 using EduPlatform.Order.API.Endpoints.Orders;
 using EduPlatform.Order.Application;
+using EduPlatform.Order.Application.BackgroundServices;
 using EduPlatform.Order.Application.Contracts.Refit;
 using EduPlatform.Order.Application.Contracts.Refit.PaymentService;
 using EduPlatform.Order.Application.Contracts.Repositories;
@@ -37,7 +38,7 @@ builder.Services.AddVersioningExt();
 builder.Services.AddRabbitMqBusExt(builder.Configuration);
 builder.Services.AddAuthenticationAndAuthorizationExt(builder.Configuration);
 builder.Services.AddRefitConfigurationExt(builder.Configuration);
-
+builder.Services.AddHostedService<CheckPaymentStatusOrderBackgroundService>();
 
 var app = builder.Build();
 app.AddOrderGroupEndpointExt(app.AddVersionSetExt());
