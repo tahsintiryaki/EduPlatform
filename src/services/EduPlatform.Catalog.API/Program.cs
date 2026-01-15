@@ -18,6 +18,7 @@ builder.Services.AddCatalogMasstransitExt(builder.Configuration);
 builder.Services.AddVersioningExt();
 builder.Services.AddAuthenticationAndAuthorizationExt(builder.Configuration);
 var app = builder.Build();
+app.UseExceptionHandler(x => { });
 
 app.AddSeedDataExt().ContinueWith(x =>
 {

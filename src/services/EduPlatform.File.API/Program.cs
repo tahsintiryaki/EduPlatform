@@ -18,6 +18,7 @@ builder.Services.AddAuthenticationAndAuthorizationExt(builder.Configuration);
 builder.Services.AddFileMasstransitExt(builder.Configuration);
 builder.Services.AddVersioningExt();
 var app = builder.Build();
+app.UseExceptionHandler(x => { });
 
 app.AddFileGroupEndpointExt(app.AddVersionSetExt());
 

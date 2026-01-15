@@ -41,6 +41,7 @@ builder.Services.AddRefitConfigurationExt(builder.Configuration);
 builder.Services.AddHostedService<CheckPaymentStatusOrderBackgroundService>();
 
 var app = builder.Build();
+app.UseExceptionHandler(x => { });
 app.AddOrderGroupEndpointExt(app.AddVersionSetExt());
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

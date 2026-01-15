@@ -31,8 +31,8 @@ public static class AuthenticationExt
                 ValidateIssuerSigningKey = true,
                 ValidateLifetime = true,
                 ValidateIssuer = true,
-                // RoleClaimType = ClaimTypes.Role,
-                // NameClaimType = ClaimTypes.NameIdentifier
+                RoleClaimType = ClaimTypes.Role,
+                NameClaimType = ClaimTypes.NameIdentifier
             };
 
 
