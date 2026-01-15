@@ -1,11 +1,13 @@
 using EduPlatform.Bus.Command;
 using EduPlatform.Catalog.API.Repositories;
+using EduPlatform.Shared.Services;
 
 namespace EduPlatform.Catalog.API.Features.Courses.Create;
 
 public class CreateCourseCommandHandler(
     AppDbContext context,
     IMapper mapper,
+    IIdentityService identityService,
     ISendEndpointProvider sendEndpointProvider)
     : IRequestHandler<CreateCourseCommand, ServiceResult<Guid>>
 {
@@ -24,6 +26,7 @@ public class CreateCourseCommandHandler(
 
         var newCourse = mapper.Map<Course>(request);
         newCourse.Created = DateTime.Now;
+        newCourse.UserId = identityService.UserId;
         newCourse.Id = NewId.NextSequentialGuid(); // index performance
 
         newCourse.Feature = new Feature

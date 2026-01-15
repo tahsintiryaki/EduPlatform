@@ -16,7 +16,8 @@ public static class CreateCourseEndpoint
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
             .AddEndpointFilter<ValidationFilter<CreateCourseCommand>>()
-            .MapToApiVersion(1, 0).DisableAntiforgery();
+            .MapToApiVersion(1, 0).DisableAntiforgery()
+            .RequireAuthorization(policyNames: "InstructorPolicy");;
         return group;
     }
 }

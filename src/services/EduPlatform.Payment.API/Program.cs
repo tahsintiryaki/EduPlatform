@@ -20,6 +20,7 @@ builder.Services.AddCommonServiceExt(typeof(PaymentAssembly));
 builder.Services.AddDbContext<AppDbContext>(options => { options.UseInMemoryDatabase("payment-in-memory-db"); });
 
 var app = builder.Build();
+app.UseExceptionHandler(x => { });
 app.AddPaymentGroupEndpointExt(app.AddVersionSetExt());
  
 // Configure the HTTP request pipeline.

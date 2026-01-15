@@ -1,18 +1,27 @@
+#region
+
+using EduPlatform.Web.PageModels;
+using EduPlatform.Web.Services;
+using EduPlatform.Web.ViewModel;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+
+#endregion
 
 namespace EduPlatform.Web.Pages;
 
-public class IndexModel : PageModel
+public class IndexModel(CatalogService catalogService, ILogger<IndexModel> logger) : BasePageModel
 {
-    private readonly ILogger<IndexModel> _logger;
+    public List<CourseViewModel>? Courses { get; set; } = [];
 
-    public IndexModel(ILogger<IndexModel> logger)
-    {
-        _logger = logger;
-    }
 
-    public void OnGet()
+    public async Task<IActionResult> OnGet()
     {
+        var coursesAsResult = await catalogService.GetAllCoursesAsync();
+
+        if (coursesAsResult.IsFail) return ErrorPage(coursesAsResult);
+
+        Courses = coursesAsResult.Data!;
+
+        return Page();
     }
 }
