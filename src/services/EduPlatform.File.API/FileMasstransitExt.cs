@@ -11,7 +11,7 @@ public static class FileMasstransitExt
         return services.AddRabbitMqBusExt(
             configuration,
             consumerAssemblies: new[] { typeof(FileAssembly).Assembly },
-            endpointPrefix: "file"
+            endpointPrefix: "file."
         );
     }
 }

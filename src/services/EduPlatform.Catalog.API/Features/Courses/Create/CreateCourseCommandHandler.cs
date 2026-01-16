@@ -47,7 +47,7 @@ public class CreateCourseCommandHandler(
                 new(newCourse.Id, pictureBytes, request.Picture.FileName);
             
             var endpoint = await sendEndpointProvider.GetSendEndpoint(
-                new Uri("queue:file-upload-course-picture-command"));
+                new Uri("queue:file.upload-course-picture-command"));
 
             await endpoint.Send(uploadCoursePictureCommand, cancellationToken);
             Console.WriteLine("publisher UploadCoursePictureCommand from CatalogService");
