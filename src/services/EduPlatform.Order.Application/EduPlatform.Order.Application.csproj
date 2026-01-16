@@ -9,7 +9,6 @@
     <ItemGroup>
       <ProjectReference Include="..\..\shared\EduPlatform.Bus\EduPlatform.Bus.csproj" />
       <ProjectReference Include="..\EduPlatform.Order.Domain\EduPlatform.Order.Domain.csproj" />
-      <ProjectReference Include="..\EduPlatform.Payment.API\EduPlatform.Payment.API.csproj" />
     </ItemGroup>
 
 </Project>
