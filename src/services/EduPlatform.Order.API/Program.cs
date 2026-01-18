@@ -22,7 +22,6 @@ builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCommonServiceExt(typeof(OrderApplicationAssembly));
-
  
 
 builder.Services.AddDbContext<AppDbContext>(option =>
@@ -41,6 +40,12 @@ builder.Services.AddRefitConfigurationExt(builder.Configuration);
 builder.Services.AddHostedService<CheckPaymentStatusOrderBackgroundService>();
 
 var app = builder.Build();
+using (var scope = app.Services.CreateScope())
+{
+    var serviceProvider = scope.ServiceProvider;
+    var dbContext = serviceProvider.GetRequiredService<AppDbContext>();
+    await dbContext.Database.MigrateAsync();
+}
 app.UseExceptionHandler(x => { });
 app.AddOrderGroupEndpointExt(app.AddVersionSetExt());
 // Configure the HTTP request pipeline.
