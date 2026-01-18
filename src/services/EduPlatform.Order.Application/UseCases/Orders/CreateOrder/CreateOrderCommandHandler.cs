@@ -1,9 +1,12 @@
 ﻿using System.Net;
+using EduPlatform.Bus.Event;
+using EduPlatform.Order.Application.Contracts.Refit.PaymentService;
 using EduPlatform.Order.Application.Contracts.Repositories;
 using EduPlatform.Order.Application.UnitOfWork;
 using EduPlatform.Order.Domain.Entities;
 using EduPlatform.Shared;
 using EduPlatform.Shared.Services;
+using MassTransit;
 using MediatR;
 
 
@@ -12,6 +15,8 @@ namespace EduPlatform.Order.Application.UseCases.Orders.CreateOrder;
 public class CreateOrderCommandHandler(
     IOrderRepository orderRepository,
     IIdentityService identityService,
+    IPublishEndpoint publishEndpoint,
+    IPaymentService paymentService,
     IUnitOfWork unitOfWork) : IRequestHandler<CreateOrderCommand, ServiceResult>
 {
     public async Task<ServiceResult> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
@@ -43,12 +48,21 @@ public class CreateOrderCommandHandler(
         orderRepository.Add(order);
         await unitOfWork.CommitAsync(cancellationToken);
 
-        var paymentId = Guid.Empty;
-        order.SetPaidStatus(paymentId);
+        var paymentRequest = new CreatePaymentRequest(order.Code, request.Payment.CardNumber,
+            request.Payment.CardHolderName, request.Payment.Expiration, request.Payment.Cvc, order.TotalPrice);
+        var paymentResponse = await paymentService.CreateAsync(paymentRequest);
+
+
+        if (!paymentResponse.Status)
+            return ServiceResult.Error(paymentResponse.ErrorMessage!, HttpStatusCode.InternalServerError);
+        
+        order.SetPaidStatus(paymentResponse.PaymentId!.Value);
 
         orderRepository.Update(order);
         await unitOfWork.CommitAsync(cancellationToken);
-
+        await publishEndpoint.Publish(new OrderCreatedEvent(order.Id, identityService.UserId),
+            cancellationToken);
+        
         return ServiceResult.SuccessAsNoContent();
     }
 }

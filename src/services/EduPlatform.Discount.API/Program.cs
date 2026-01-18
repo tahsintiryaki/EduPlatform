@@ -1,3 +1,5 @@
+using EduPlatform.Bus;
+using EduPlatform.Catalog.API;
 using EduPlatform.Discount.API;
 using EduPlatform.Discount.API.Features.Discounts;
 using EduPlatform.Discount.API.Options;
@@ -13,10 +15,12 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddOptionExt();
 builder.Services.AddMongoDbConfigureExt();
 
-builder.Services.AddCommonServiceExt(typeof(DiscountAssembly)); //
+builder.Services.AddCommonServiceExt(typeof(DiscountAssembly)); 
+builder.Services.AddDiscountMasstransitExt(builder.Configuration);
 builder.Services.AddVersioningExt();
-
+builder.Services.AddAuthenticationAndAuthorizationExt(builder.Configuration);
 var app = builder.Build();
+app.UseExceptionHandler(x => { });
 app.AddDiscountGroupEndpointExt(app.AddVersionSetExt());
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -26,7 +30,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.Run();
 

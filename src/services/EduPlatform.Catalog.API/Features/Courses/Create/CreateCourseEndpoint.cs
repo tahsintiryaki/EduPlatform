@@ -8,7 +8,7 @@ public static class CreateCourseEndpoint
 {
     public static RouteGroupBuilder CreateCourseGroupItemEndpoint(this RouteGroupBuilder group)
     {
-        group.MapPost("/", async (CreateCourseCommand command, IMediator mediator) =>
+        group.MapPost("/", async ([FromForm]CreateCourseCommand command, IMediator mediator) =>
                 (await mediator.Send(command)).ToGenericResult())
             .WithName("CreateCourse")
             .Produces<Guid>(StatusCodes.Status201Created)
@@ -16,7 +16,8 @@ public static class CreateCourseEndpoint
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
             .AddEndpointFilter<ValidationFilter<CreateCourseCommand>>()
-            .MapToApiVersion(1, 0);
+            .MapToApiVersion(1, 0).DisableAntiforgery()
+            .RequireAuthorization(policyNames: "InstructorPolicy");;
         return group;
     }
 }

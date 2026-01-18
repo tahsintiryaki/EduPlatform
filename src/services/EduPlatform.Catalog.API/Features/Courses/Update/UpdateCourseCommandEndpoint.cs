@@ -11,7 +11,8 @@ public static class UpdateCourseCommandEndpoint
                     (await mediator.Send(command)).ToGenericResult())
             .WithName("UpdateCourse")
             .MapToApiVersion(1, 0)
-            .AddEndpointFilter<ValidationFilter<UpdateCourseCommand>>();
+            .AddEndpointFilter<ValidationFilter<UpdateCourseCommand>>()
+            .RequireAuthorization(policyNames: "InstructorPolicy");;
 
         return group;
     }

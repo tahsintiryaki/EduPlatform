@@ -1,3 +1,4 @@
+using EduPlatform.Shared.ExceptionHandlers;
 using EduPlatform.Shared.Services;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -17,6 +18,7 @@ public static class CommonServiceExt
         
         services.AddScoped<IIdentityService, IdentityService>();
         services.AddAutoMapper(assembly);
+        services.AddExceptionHandler<GlobalExceptionHandler>();
         return services;
     }
 }
