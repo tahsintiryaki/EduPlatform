@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -20,6 +22,8 @@ builder.Services.AddCommonServiceExt(typeof(PaymentAssembly));
 builder.Services.AddDbContext<AppDbContext>(options => { options.UseInMemoryDatabase("payment-in-memory-db"); });
 
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 app.UseExceptionHandler(x => { });
 app.AddPaymentGroupEndpointExt(app.AddVersionSetExt());
  

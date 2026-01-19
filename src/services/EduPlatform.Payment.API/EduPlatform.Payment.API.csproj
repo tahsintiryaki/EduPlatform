@@ -14,6 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\EduPlatform.ServiceDefaults\EduPlatform.ServiceDefaults.csproj" />
       <ProjectReference Include="..\..\shared\EduPlatform.Bus\EduPlatform.Bus.csproj" />
       <ProjectReference Include="..\..\shared\EduPlatform.Shared\EduPlatform.Shared.csproj" />
     </ItemGroup>

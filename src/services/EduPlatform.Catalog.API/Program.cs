@@ -8,6 +8,8 @@ using EduPlatform.Shared.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -18,6 +20,8 @@ builder.Services.AddCatalogMasstransitExt(builder.Configuration);
 builder.Services.AddVersioningExt();
 builder.Services.AddAuthenticationAndAuthorizationExt(builder.Configuration);
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 app.UseExceptionHandler(x => { });
 
 app.AddSeedDataExt().ContinueWith(x =>

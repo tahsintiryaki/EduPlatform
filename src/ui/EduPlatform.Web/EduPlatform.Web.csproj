@@ -18,6 +18,10 @@
       <_ContentIncludedByDefault Remove="Pages\Instructor\Index.cshtml" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\EduPlatform.ServiceDefaults\EduPlatform.ServiceDefaults.csproj" />
+    </ItemGroup>
+
  
 
 </Project>
