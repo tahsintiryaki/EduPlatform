@@ -1,5 +1,3 @@
-using EduPlatform.Bus;
-using EduPlatform.Catalog.API;
 using EduPlatform.Discount.API;
 using EduPlatform.Discount.API.Features.Discounts;
 using EduPlatform.Discount.API.Options;
