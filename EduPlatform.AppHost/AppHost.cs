@@ -10,6 +10,7 @@ var rabbitMqPassword = builder.AddParameter("RABBITMQ-PASSWORD");
 var rabbitMq = builder.AddRabbitMQ("rabbitMQ", rabbitMqUserName, rabbitMqPassword, 5672).WithManagementPlugin(15672);
 
 #endregion
+
 #region Keycloak
 
 var postgresUser = builder.AddParameter("POSTGRES-USER");
@@ -75,6 +76,7 @@ basketApi.WithReference(redisBasketDb).WithReference(rabbitMq).WaitFor(rabbitMq)
     .WaitFor(keycloak);
 
 #endregion
+
 #region Discount-API
 
 var mongoDiscountDb = builder.AddMongoDB("mongo-db-discount", 27034, mongoUser, mongoPassword).WithImage("mongo:8.0-rc")
@@ -99,13 +101,13 @@ fileApi.WithReference(rabbitMq).WaitFor(rabbitMq).WithReference(keycloakEndpoint
 var postgrePaymentUser = builder.AddParameter("POSTGRES-PAYMENT-USER");
 var postgrePaymentPassword = builder.AddParameter("POSTGRES-PAYMENT-PASSWORD");
 
-var postgresPaymentDb = builder.AddPostgres("postgres-db-payment",postgrePaymentUser,postgrePaymentPassword,5434)
-    .WithDataVolume("postgres.db.payment.volume").AddDatabase("payment-db"); 
+var postgresPaymentDb = builder.AddPostgres("postgres-db-payment", postgrePaymentUser, postgrePaymentPassword, 5434)
+    .WithDataVolume("postgres.db.payment.volume").AddDatabase("payment-db");
 
 var paymentApi = builder.AddProject<Projects.EduPlatform_Payment_API>("eduplatform-payment-api");
 paymentApi.WithReference(rabbitMq).WaitFor(rabbitMq)
-          .WithReference(keycloakEndpoint).WaitFor(keycloak)
-          .WithReference(postgresPaymentDb).WaitFor(postgresPaymentDb);
+    .WithReference(keycloakEndpoint).WaitFor(keycloak)
+    .WithReference(postgresPaymentDb).WaitFor(postgresPaymentDb);
 
 #endregion
 
@@ -114,15 +116,27 @@ paymentApi.WithReference(rabbitMq).WaitFor(rabbitMq)
 var sqlserverPassword = builder.AddParameter("SQLSERVER-SA-PASSWORD");
 
 
-var sqlserverOrderDb = builder.AddSqlServer("sqlserver-db-order",sqlserverPassword,1433)
+var sqlserverOrderDb = builder.AddSqlServer("sqlserver-db-order", sqlserverPassword, 1433)
     .WithDataVolume("sqlserver.db.order.volume").AddDatabase("order-db");
 
 var orderApi = builder.AddProject<Projects.EduPlatform_Order_API>("eduplatform-order-api");
 
 orderApi.WithReference(sqlserverOrderDb).WaitFor(sqlserverOrderDb).WithReference(rabbitMq).WaitFor(rabbitMq)
     .WithReference(keycloakEndpoint).WaitFor(keycloak);
+#region Order-Outbox-Worker-Service
+
+
+var orderOutboxWorkerService =
+    builder.AddProject<Projects.EduPlatform_Order_Outbox_Worker_Service>("eduplatform-order-outbox-worker-service");
+orderOutboxWorkerService.WithReference(sqlserverOrderDb).WaitFor(sqlserverOrderDb).WithReference(rabbitMq)
+    .WaitFor(rabbitMq)
+    .WithReference(keycloakEndpoint).WaitFor(keycloak);
 
 #endregion
+
+#endregion
+
+
 
 #region Gateway-API
 
@@ -138,4 +152,5 @@ web.WithReference(basketApi).WithReference(catalogApi).WithReference(discountApi
     .WithReference(fileApi).WithReference(paymentApi).WithReference(keycloakEndpoint).WaitFor(keycloak);
 
 #endregion
+
 builder.Build().Run();
