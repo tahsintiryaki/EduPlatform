@@ -35,6 +35,7 @@ builder.Services.AddCommonServiceExt(typeof(OrderApplicationAssembly));
 builder.AddSqlServerDbContext<AppDbContext>("order-db");
 builder.Services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderOutboxRepository, OrderOutboxRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddVersioningExt();

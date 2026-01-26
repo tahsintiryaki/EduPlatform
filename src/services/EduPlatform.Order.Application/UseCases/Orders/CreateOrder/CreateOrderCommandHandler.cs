@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Text.Json;
 using EduPlatform.Bus.Event;
 using EduPlatform.Order.Application.Contracts.Refit.PaymentService;
 using EduPlatform.Order.Application.Contracts.Repositories;
@@ -14,6 +15,7 @@ namespace EduPlatform.Order.Application.UseCases.Orders.CreateOrder;
 
 public class CreateOrderCommandHandler(
     IOrderRepository orderRepository,
+    IOrderOutboxRepository orderOutboxRepository,
     IIdentityService identityService,
     IPublishEndpoint publishEndpoint,
     IPaymentService paymentService,
@@ -55,14 +57,25 @@ public class CreateOrderCommandHandler(
 
         if (!paymentResponse.Status)
             return ServiceResult.Error(paymentResponse.ErrorMessage!, HttpStatusCode.InternalServerError);
-        
+
         order.SetPaidStatus(paymentResponse.PaymentId!.Value);
 
         orderRepository.Update(order);
         await unitOfWork.CommitAsync(cancellationToken);
-        await publishEndpoint.Publish(new OrderCreatedEvent(order.Id, identityService.UserId),
-            cancellationToken);
-        
+        Guid idempotentToken = NewId.NextSequentialGuid();
+        OrderCreatedEvent orderCreatedEvent = new OrderCreatedEvent(idempotentToken, order.Id, identityService.UserId);
+        orderOutboxRepository.Add(new OrderOutbox()
+        {
+            Id = idempotentToken,
+            OccuredOn = DateTime.UtcNow,
+            Type =  orderCreatedEvent.GetType().Name,
+            ProcessedDate = null,
+            Payload = JsonSerializer.Serialize(orderCreatedEvent),
+        });
+        await unitOfWork.CommitAsync(cancellationToken);
+        // await publishEndpoint.Publish(new OrderCreatedEvent(order.Id, identityService.UserId),
+        //     cancellationToken);
+
         return ServiceResult.SuccessAsNoContent();
     }
 }
