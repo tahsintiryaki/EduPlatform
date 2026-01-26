@@ -1,7 +1,7 @@
 using EduPlatform.Bus;
 using EduPlatform.Discount.API;
 
-namespace EduPlatform.Catalog.API;
+namespace EduPlatform.Discount.API;
 
 public static class DiscountMasstransitExt
 {
@@ -12,7 +12,7 @@ public static class DiscountMasstransitExt
         return services.AddRabbitMqBusExt(
             configuration,
             consumerAssemblies: new[] { typeof(DiscountAssembly).Assembly },
-            endpointPrefix: "discount"
+            endpointPrefix: "discount."
         );
     }
 }

@@ -130,6 +130,18 @@
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
+  postgres.db.payment:
+    restart: always
+    image: postgres:16.2
+    container_name: postgres.db.payment.container
+    environment:
+      POSTGRES_DB: ${POSTGRES_PAYMENT_DB}
+      POSTGRES_USER: ${POSTGRES_PAYMENT_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PAYMENT_PASSWORD}
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres.db.payment.volume:/var/lib/postgresql/data
 
 volumes:
   mongo.db.catalog.volume:
@@ -138,4 +150,5 @@ volumes:
   sqlserver.db.order.volume:
   postgres.db.keycloak.volume:
   postgres.db.keycloak.ui.volume:
+  postgres.db.payment.volume:
   rabbitmq_data:

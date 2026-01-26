@@ -11,7 +11,7 @@ public static class CatalogMasstransitExt
         return services.AddRabbitMqBusExt(
             configuration,
             consumerAssemblies: new[] { typeof(CatalogAssembly).Assembly },
-            endpointPrefix: "catalog"
+            endpointPrefix: "catalog."
         );
     }
 }
