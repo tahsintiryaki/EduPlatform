@@ -13,6 +13,8 @@ using Refit;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddMvc(opt => opt.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
@@ -33,7 +35,7 @@ builder.Services.AddExceptionHandler<UnauthorizedAccessExceptionHandler>();
 builder.Services.AddRefitClient<ICatalogRefitService>().ConfigureHttpClient(configure =>
     {
         var microserviceOption = builder.Configuration.GetSection(nameof(MicroserviceOption)).Get<MicroserviceOption>();
-        configure.BaseAddress = new Uri(microserviceOption!.Catalog.BaseAddress);
+        configure.BaseAddress = new Uri("http://eduplatform-catalog-api");
     }).AddHttpMessageHandler<AuthenticatedHttpClientHandler>()
     .AddHttpMessageHandler<ClientAuthenticatedHttpClientHandler>();
 
@@ -41,7 +43,7 @@ builder.Services.AddRefitClient<ICatalogRefitService>().ConfigureHttpClient(conf
 builder.Services.AddRefitClient<IBasketRefitService>().ConfigureHttpClient(configure =>
     {
         var microserviceOption = builder.Configuration.GetSection(nameof(MicroserviceOption)).Get<MicroserviceOption>();
-        configure.BaseAddress = new Uri(microserviceOption!.Basket.BaseAddress);
+        configure.BaseAddress = new Uri("http://eduplatform-basket-api");
     }).AddHttpMessageHandler<AuthenticatedHttpClientHandler>()
     .AddHttpMessageHandler<ClientAuthenticatedHttpClientHandler>();
 
@@ -49,7 +51,7 @@ builder.Services.AddRefitClient<IBasketRefitService>().ConfigureHttpClient(confi
 builder.Services.AddRefitClient<IDiscountRefitService>().ConfigureHttpClient(configure =>
     {
         var microserviceOption = builder.Configuration.GetSection(nameof(MicroserviceOption)).Get<MicroserviceOption>();
-        configure.BaseAddress = new Uri(microserviceOption!.Discount.BaseAddress);
+        configure.BaseAddress = new Uri("http://eduplatform-discount-api");
     }).AddHttpMessageHandler<AuthenticatedHttpClientHandler>()
     .AddHttpMessageHandler<ClientAuthenticatedHttpClientHandler>();
 
@@ -57,7 +59,7 @@ builder.Services.AddRefitClient<IDiscountRefitService>().ConfigureHttpClient(con
 builder.Services.AddRefitClient<IOrderRefitService>().ConfigureHttpClient(configure =>
     {
         var microserviceOption = builder.Configuration.GetSection(nameof(MicroserviceOption)).Get<MicroserviceOption>();
-        configure.BaseAddress = new Uri(microserviceOption!.Order.BaseAddress);
+        configure.BaseAddress = new Uri("http://eduplatform-order-api");
     }).AddHttpMessageHandler<AuthenticatedHttpClientHandler>()
     .AddHttpMessageHandler<ClientAuthenticatedHttpClientHandler>();
 
@@ -80,6 +82,8 @@ builder.Services.AddAuthentication(configureOption =>
 
 builder.Services.AddAuthorization();
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 
 var cultureInfo = new CultureInfo("en-US");
 CultureInfo.DefaultThreadCurrentCulture = cultureInfo;

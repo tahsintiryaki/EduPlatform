@@ -1,0 +1,31 @@
+<Project Sdk="Aspire.AppHost.Sdk/13.1.0">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <UserSecretsId>9cbe0293-43b6-4b3f-8cc9-9bb890268895</UserSecretsId>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\src\services\EduPlatform.Basket.API\EduPlatform.Basket.API.csproj" />
+      <ProjectReference Include="..\src\services\EduPlatform.Catalog.API\EduPlatform.Catalog.API.csproj" />
+      <ProjectReference Include="..\src\services\EduPlatform.Discount.API\EduPlatform.Discount.API.csproj" />
+      <ProjectReference Include="..\src\services\EduPlatform.File.API\EduPlatform.File.API.csproj" />
+      <ProjectReference Include="..\src\services\EduPlatform.Gateway\EduPlatform.Gateway.csproj" />
+      <ProjectReference Include="..\src\services\EduPlatform.Order.API\EduPlatform.Order.API.csproj" />
+      <ProjectReference Include="..\src\services\EduPlatform.Order.Outbox.Worker.Service\EduPlatform.Order.Outbox.Worker.Service.csproj" />
+      <ProjectReference Include="..\src\services\EduPlatform.Payment.API\EduPlatform.Payment.API.csproj" />
+      <ProjectReference Include="..\src\ui\EduPlatform.Web\EduPlatform.Web.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Aspire.Hosting.MongoDB" Version="9.5.1" />
+      <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="9.5.1" />
+      <PackageReference Include="Aspire.Hosting.RabbitMQ" Version="9.5.1" />
+      <PackageReference Include="Aspire.Hosting.Redis" Version="9.5.1" />
+      <PackageReference Include="Aspire.Hosting.SqlServer" Version="9.5.1" />
+    </ItemGroup>
+
+</Project>

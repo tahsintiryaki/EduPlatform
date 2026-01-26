@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -21,10 +23,13 @@ builder.Services.AddCommonServiceExt(typeof(PaymentAssembly));
 builder.Services.AddDbContext<InboxDbContext>(options =>
 {
     options.UseNpgsql(
-        builder.Configuration.GetConnectionString("PostgreSql"));
+        builder.Configuration.GetConnectionString("payment-db"));
 });
+
 builder.Services.AddPaymentMasstransitExt(builder.Configuration);
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 app.UseExceptionHandler(x => { });
 app.AddPaymentGroupEndpointExt(app.AddVersionSetExt());
  
@@ -35,7 +40,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+using (var scope = app.Services.CreateScope())
+{
+    var serviceProvider = scope.ServiceProvider;
+    var dbContext = serviceProvider.GetRequiredService<InboxDbContext>();
+    await dbContext.Database.MigrateAsync();
+}
 app.UseAuthentication();
 app.UseAuthorization();
 

@@ -64,6 +64,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "orderworkerservice", "order
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduPlatform.Order.Outbox.Worker.Service", "src\services\EduPlatform.Order.Outbox.Worker.Service\EduPlatform.Order.Outbox.Worker.Service.csproj", "{E9ABD386-C6F6-41E4-80C3-88C9D48F5CF2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduPlatform.AppHost", "EduPlatform.AppHost\EduPlatform.AppHost.csproj", "{D5D35EDC-99F3-4CF7-A723-B74822D9E97B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduPlatform.ServiceDefaults", "EduPlatform.ServiceDefaults\EduPlatform.ServiceDefaults.csproj", "{45DF26E4-CB92-49D4-BBCB-293FC66486C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -152,6 +156,14 @@ Global
 		{E38CC430-8589-47F8-AC30-EEF871882A71}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E38CC430-8589-47F8-AC30-EEF871882A71}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E38CC430-8589-47F8-AC30-EEF871882A71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5D35EDC-99F3-4CF7-A723-B74822D9E97B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5D35EDC-99F3-4CF7-A723-B74822D9E97B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5D35EDC-99F3-4CF7-A723-B74822D9E97B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5D35EDC-99F3-4CF7-A723-B74822D9E97B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45DF26E4-CB92-49D4-BBCB-293FC66486C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45DF26E4-CB92-49D4-BBCB-293FC66486C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45DF26E4-CB92-49D4-BBCB-293FC66486C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45DF26E4-CB92-49D4-BBCB-293FC66486C6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E9ABD386-C6F6-41E4-80C3-88C9D48F5CF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E9ABD386-C6F6-41E4-80C3-88C9D48F5CF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9ABD386-C6F6-41E4-80C3-88C9D48F5CF2}.Release|Any CPU.ActiveCfg = Release|Any CPU

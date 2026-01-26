@@ -5,6 +5,8 @@ using EduPlatform.Shared.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -13,13 +15,16 @@ builder.Services.AddCommonServiceExt(typeof(BasketAssembly));
 builder.Services.AddBasketMasstransitExt(builder.Configuration);
 builder.Services.AddVersioningExt();
 builder.Services.AddScoped<BasketService>();
-builder.Services.AddStackExchangeRedisCache(options =>
-{
-    options.Configuration = builder.Configuration.GetConnectionString("Redis");
-});
+builder.AddRedisDistributedCache("redis-db-basket");
+// builder.Services.AddStackExchangeRedisCache(options =>
+// {
+//     options.Configuration = builder.Configuration.GetConnectionString("Redis");
+// });
 
 builder.Services.AddAuthenticationAndAuthorizationExt(builder.Configuration);
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 app.UseExceptionHandler(x => { });
 app.AddBasketGroupEndpointExt(app.AddVersionSetExt());
 // Configure the HTTP request pipeline.

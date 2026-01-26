@@ -6,6 +6,8 @@ using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -26,6 +28,8 @@ builder.Services.AddAuthenticationAndAuthorizationExt(builder.Configuration);
 builder.Services.AddFileMasstransitExt(builder.Configuration);
 builder.Services.AddVersioningExt();
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 app.UseExceptionHandler(x => { });
 
 app.AddFileGroupEndpointExt(app.AddVersionSetExt());

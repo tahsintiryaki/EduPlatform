@@ -5,6 +5,8 @@ using EduPlatform.Discount.API.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
@@ -18,6 +20,8 @@ builder.Services.AddDiscountMasstransitExt(builder.Configuration);
 builder.Services.AddVersioningExt();
 builder.Services.AddAuthenticationAndAuthorizationExt(builder.Configuration);
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 app.UseExceptionHandler(x => { });
 app.AddDiscountGroupEndpointExt(app.AddVersionSetExt());
 // Configure the HTTP request pipeline.

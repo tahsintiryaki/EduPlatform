@@ -33,6 +33,6 @@ builder.Services.AddQuartz(configurator =>
 builder.Services.AddQuartzHostedService(options => options.WaitForJobsToComplete = true);
 
 builder.Services.AddHostedService<Worker>();
-builder.Services.AddDbContext<AppDbContext>(options =>options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
+builder.Services.AddDbContext<AppDbContext>(options =>options.UseSqlServer(builder.Configuration.GetConnectionString("order-db")));
 var host = builder.Build();
 host.Run();
