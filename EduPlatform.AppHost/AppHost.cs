@@ -96,8 +96,16 @@ fileApi.WithReference(rabbitMq).WaitFor(rabbitMq).WithReference(keycloakEndpoint
 
 #region Payment-API
 
+var postgrePaymentUser = builder.AddParameter("POSTGRES-PAYMENT-USER");
+var postgrePaymentPassword = builder.AddParameter("POSTGRES-PAYMENT-PASSWORD");
+
+var postgresPaymentDb = builder.AddPostgres("postgres-db-payment",postgrePaymentUser,postgrePaymentPassword,5434)
+    .WithDataVolume("postgres.db.payment.volume").AddDatabase("payment-db"); 
+
 var paymentApi = builder.AddProject<Projects.EduPlatform_Payment_API>("eduplatform-payment-api");
-paymentApi.WithReference(rabbitMq).WaitFor(rabbitMq).WithReference(keycloakEndpoint).WaitFor(keycloak);
+paymentApi.WithReference(rabbitMq).WaitFor(rabbitMq)
+          .WithReference(keycloakEndpoint).WaitFor(keycloak)
+          .WithReference(postgresPaymentDb).WaitFor(postgresPaymentDb);
 
 #endregion
 
