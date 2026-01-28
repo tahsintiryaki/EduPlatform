@@ -1,4 +1,3 @@
-using EduPlatform.Bus;
 using EduPlatform.Payment.API;
 using EduPlatform.Payment.API.Feature.Payments;
 using EduPlatform.Payment.API.Repositories;
@@ -19,7 +18,7 @@ builder.Services.AddAuthenticationAndAuthorizationExt(builder.Configuration);
 
 builder.Services.AddVersioningExt();
 builder.Services.AddCommonServiceExt(typeof(PaymentAssembly));
- builder.Services.AddDbContext<AppDbContext>(options => { options.UseInMemoryDatabase("payment-in-memory-db"); });
+ // builder.Services.AddDbContext<AppDbContext>(options => { options.UseInMemoryDatabase("payment-in-memory-db"); });
 builder.Services.AddDbContext<InboxDbContext>(options =>
 {
     options.UseNpgsql(

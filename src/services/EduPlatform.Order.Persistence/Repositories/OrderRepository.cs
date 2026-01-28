@@ -24,4 +24,11 @@ public class OrderRepository(AppDbContext context)
         order.PaymentId = paymentId;
         Context.Update(order);
     }
+    public async Task SetStatusWithOrderId(string orderCode, Guid paymentId, OrderStatus status)
+    {
+        var order = await Context.Orders.FirstAsync(x => x.Code == orderCode);
+        order.Status = status;
+        order.PaymentId =paymentId;
+        Context.Update(order);
+    }
 }

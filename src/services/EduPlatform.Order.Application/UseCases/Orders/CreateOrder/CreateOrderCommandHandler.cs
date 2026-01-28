@@ -19,12 +19,12 @@ public class CreateOrderCommandHandler(
     IIdentityService identityService,
     IPublishEndpoint publishEndpoint,
     IPaymentService paymentService,
-    IUnitOfWork unitOfWork) : IRequestHandler<CreateOrderCommand, ServiceResult>
+    IUnitOfWork unitOfWork) : IRequestHandler<CreateOrderCommand, ServiceResult<CreateOrderResponse>>
 {
-    public async Task<ServiceResult> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
+    public async Task<ServiceResult<CreateOrderResponse>> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
         if (!request.Items.Any())
-            return ServiceResult.Error("Order items not found", "Order must have at least one item",
+            return ServiceResult<CreateOrderResponse>.Error("Order items not found", "Order must have at least one item",
                 HttpStatusCode.BadRequest);
 
 
@@ -42,40 +42,20 @@ public class CreateOrderCommandHandler(
             newAddress.Id);
         foreach (var orderItem in request.Items)
             order.AddOrderItem(orderItem.ProductId, orderItem.ProductName, orderItem.UnitPrice);
-
-
+        
         order.Address = newAddress;
-
-
         orderRepository.Add(order);
+        // Guid idempotentToken = NewId.NextGuid();
+        // OrderCreatedEvent orderCreatedEvent = new OrderCreatedEvent(idempotentToken, order.Id, identityService.UserId);
+        // orderOutboxRepository.Add(new OrderOutbox()
+        // {
+        //     Id = idempotentToken,
+        //     OccuredOn = DateTime.UtcNow,
+        //     Type = orderCreatedEvent.GetType().Name,
+        //     ProcessedDate = null,
+        //     Payload = JsonSerializer.Serialize(orderCreatedEvent),
+        // });
         await unitOfWork.CommitAsync(cancellationToken);
-
-        var paymentRequest = new CreatePaymentRequest(order.Code, request.Payment.CardNumber,
-            request.Payment.CardHolderName, request.Payment.Expiration, request.Payment.Cvc, order.TotalPrice);
-        var paymentResponse = await paymentService.CreateAsync(paymentRequest);
-
-
-        if (!paymentResponse.Status)
-            return ServiceResult.Error(paymentResponse.ErrorMessage!, HttpStatusCode.InternalServerError);
-
-        order.SetPaidStatus(paymentResponse.PaymentId!.Value);
-
-        orderRepository.Update(order);
-        await unitOfWork.CommitAsync(cancellationToken);
-        Guid idempotentToken = NewId.NextSequentialGuid();
-        OrderCreatedEvent orderCreatedEvent = new OrderCreatedEvent(idempotentToken, order.Id, identityService.UserId);
-        orderOutboxRepository.Add(new OrderOutbox()
-        {
-            Id = idempotentToken,
-            OccuredOn = DateTime.UtcNow,
-            Type =  orderCreatedEvent.GetType().Name,
-            ProcessedDate = null,
-            Payload = JsonSerializer.Serialize(orderCreatedEvent),
-        });
-        await unitOfWork.CommitAsync(cancellationToken);
-        // await publishEndpoint.Publish(new OrderCreatedEvent(order.Id, identityService.UserId),
-        //     cancellationToken);
-
-        return ServiceResult.SuccessAsNoContent();
+        return ServiceResult<CreateOrderResponse>.SuccessAsCreated(new CreateOrderResponse(order.Code,order.Status.ToString(),order.TotalPrice,order.Created),"");
     }
 }

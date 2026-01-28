@@ -11,7 +11,7 @@ public record CreateOrderViewModel
 {
     public AddressViewModel Address { get; set; } = null!;
 
-    public PaymentViewModel Payment { get; set; } = null!;
+    // public CreatePaymentViewModel CreatePayment { get; set; } = null!;
 
     [ValidateNever] public List<OrderItemViewModel> OrderItems { get; set; } = [];
 
@@ -24,7 +24,7 @@ public record CreateOrderViewModel
     public static CreateOrderViewModel Empty => new()
     {
         Address = AddressViewModel.Empty,
-        Payment = PaymentViewModel.Empty
+        // CreatePayment = CreatePaymentViewModel.Empty
     };
 
 

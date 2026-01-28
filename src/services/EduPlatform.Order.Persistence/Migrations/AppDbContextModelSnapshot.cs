@@ -17,7 +17,7 @@ namespace EduPlatform.Order.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.11")
+                .HasAnnotation("ProductVersion", "9.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -150,6 +150,28 @@ namespace EduPlatform.Order.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("OrderOutboxes");
+                });
+
+            modelBuilder.Entity("EduPlatform.Order.Domain.Entities.PaymentInbox", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("IdempotentToken");
+
+                    b.Property<string>("PayloadJson")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ProcessDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("Processed")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PaymentInboxes");
                 });
 
             modelBuilder.Entity("EduPlatform.Order.Domain.Entities.Order", b =>

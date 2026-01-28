@@ -28,10 +28,16 @@ builder.Services.AddScoped<CatalogService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<BasketService>();
 builder.Services.AddScoped<OrderService>();
+builder.Services.AddScoped<PaymentService>();
 builder.Services.AddScoped<AuthenticatedHttpClientHandler>();
 builder.Services.AddScoped<ClientAuthenticatedHttpClientHandler>();
 builder.Services.AddExceptionHandler<UnauthorizedAccessExceptionHandler>();
-
+builder.Services
+    .AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+    });
 builder.Services.AddRefitClient<ICatalogRefitService>().ConfigureHttpClient(configure =>
     {
         var microserviceOption = builder.Configuration.GetSection(nameof(MicroserviceOption)).Get<MicroserviceOption>();
@@ -63,6 +69,12 @@ builder.Services.AddRefitClient<IOrderRefitService>().ConfigureHttpClient(config
     }).AddHttpMessageHandler<AuthenticatedHttpClientHandler>()
     .AddHttpMessageHandler<ClientAuthenticatedHttpClientHandler>();
 
+builder.Services.AddRefitClient<IPaymentRefitService>().ConfigureHttpClient(configure =>
+    {
+        var microserviceOption = builder.Configuration.GetSection(nameof(MicroserviceOption)).Get<MicroserviceOption>();
+        configure.BaseAddress = new Uri("http://eduplatform-payment-api");
+    }).AddHttpMessageHandler<AuthenticatedHttpClientHandler>()
+    .AddHttpMessageHandler<ClientAuthenticatedHttpClientHandler>();
 
 
 

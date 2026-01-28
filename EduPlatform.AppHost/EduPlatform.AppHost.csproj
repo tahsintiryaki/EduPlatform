@@ -17,6 +17,7 @@
       <ProjectReference Include="..\src\services\EduPlatform.Order.API\EduPlatform.Order.API.csproj" />
       <ProjectReference Include="..\src\services\EduPlatform.Order.Outbox.Worker.Service\EduPlatform.Order.Outbox.Worker.Service.csproj" />
       <ProjectReference Include="..\src\services\EduPlatform.Payment.API\EduPlatform.Payment.API.csproj" />
+      <ProjectReference Include="..\src\services\EduPlatform.Payment.Outbox.Worker.Service\EduPlatform.Payment.Outbox.Worker.Service.csproj" />
       <ProjectReference Include="..\src\ui\EduPlatform.Web\EduPlatform.Web.csproj" />
     </ItemGroup>
 

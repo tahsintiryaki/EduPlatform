@@ -6,4 +6,4 @@ using EduPlatform.Web.Pages.Order.ViewModel;
 
 namespace EduPlatform.Web.Pages.Order.Dto;
 
-public record GetOrderHistoryResponse(DateTime Created, decimal TotalPrice, List<OrderItemViewModel> Items);
+public record GetOrderHistoryResponse(DateTime Created, decimal TotalPrice, string OrderStatus, List<OrderItemViewModel> Items);

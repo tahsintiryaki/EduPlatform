@@ -6,8 +6,11 @@ namespace EduPlatform.Payment.API.Feature.Payments.Create;
 
 public record CreatePaymentCommand(
     string OrderCode,
-    string CardNumber,
-    string CardHolderName,
-    string CardExpirationDate,
-    string CardSecurityNumber,
+    string Type,
+    string Token,
+    string Last4,
+    string Brand,
+    int ExpMonth,
+    int ExpYear,
     decimal Amount) : IRequestByServiceResult<CreatePaymentResponse>;
+    
