@@ -6,7 +6,7 @@ using System.Collections.Immutable;
 
 namespace EduPlatform.Web.Pages.Order.ViewModel;
 
-public record OrderHistoryViewModel(string DateTime, string TotalPrice)
+public record OrderHistoryViewModel(string DateTime, string TotalPrice, string OrderStatus)
 {
     private List<OrderItemViewModel> OrderItems { get; } = [];
 

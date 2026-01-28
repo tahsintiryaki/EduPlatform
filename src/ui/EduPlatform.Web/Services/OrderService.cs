@@ -1,6 +1,7 @@
 ﻿#region
 
 using System.Net;
+using System.Text.Json;
 using EduPlatform.Web.Extensions;
 using EduPlatform.Web.Pages.Order.Dto;
 using EduPlatform.Web.Pages.Order.ViewModel;
@@ -12,7 +13,7 @@ namespace EduPlatform.Web.Services;
 
 public class OrderService(IOrderRefitService orderService, ILogger<OrderService> logger)
 {
-    public async Task<ServiceResult> CreateOrder(CreateOrderViewModel viewModel)
+    public async Task<ServiceResult<CreateOrderResponse>> CreateOrder(CreateOrderViewModel viewModel)
     {
         //createAddressDto
         var address = new AddressDto(viewModel.Address.Province, viewModel.Address.District,
@@ -20,8 +21,8 @@ public class OrderService(IOrderRefitService orderService, ILogger<OrderService>
 
 
         //paymentDto
-        var payment = new PaymentDto(viewModel.Payment.CardNumber, viewModel.Payment.CardHolderName,
-            viewModel.Payment.ExpiryDate, viewModel.Payment.Cvv, viewModel.TotalPrice);
+        // var payment = new PaymentDto(viewModel.Payment.CardNumber, viewModel.Payment.CardHolderName,
+        //     viewModel.Payment.ExpiryDate, viewModel.Payment.Cvv, viewModel.TotalPrice);
 
 
         // orderItems
@@ -29,7 +30,7 @@ public class OrderService(IOrderRefitService orderService, ILogger<OrderService>
             .ToList();
 
 
-        var createOrderRequest = new CreateOrderRequest(viewModel.DiscountRate, address, payment, orderItems);
+        var createOrderRequest = new CreateOrderRequest(viewModel.DiscountRate, address, orderItems);
 
 
         var response = await orderService.CreateOrder(createOrderRequest);
@@ -37,13 +38,20 @@ public class OrderService(IOrderRefitService orderService, ILogger<OrderService>
         if (!response.IsSuccessStatusCode)
         {
             if (response.StatusCode == HttpStatusCode.BadRequest)
-                return ServiceResult.FailFromProblemDetails(response.Error);
+                return ServiceResult<CreateOrderResponse>.FailFromProblemDetails(response.Error);
 
             logger.LogProblemDetails(response.Error);
-            return ServiceResult.Error("An error occurred while creating the order");
+            return ServiceResult<CreateOrderResponse>.Error("An error occurred while creating the order");
         }
 
-        return ServiceResult.Success();
+        var responseData = JsonSerializer.Deserialize<CreateOrderResponse>(
+            response.Content.ToString(),
+            new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
+        return ServiceResult<CreateOrderResponse>.Success(responseData);
     }
 
     public async Task<ServiceResult<List<OrderHistoryViewModel>>> GetHistory()
@@ -64,7 +72,7 @@ public class OrderService(IOrderRefitService orderService, ILogger<OrderService>
         {
             var newOrderHistory =
                 new OrderHistoryViewModel(orderResponse.Created.ToLongDateString(),
-                    orderResponse.TotalPrice.ToString("C"));
+                    orderResponse.TotalPrice.ToString("C"),orderResponse.OrderStatus);
 
             foreach (var orderItem in orderResponse.Items)
                 newOrderHistory.AddItem(orderItem.ProductId, orderItem.ProductName, orderItem.UnitPrice);

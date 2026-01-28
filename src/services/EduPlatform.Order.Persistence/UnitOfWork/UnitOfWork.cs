@@ -20,4 +20,9 @@ public class UnitOfWork(AppDbContext context) : IUnitOfWork
     {
         return context.Database.CommitTransactionAsync(cancellationToken);
     }
+
+    public async Task RoolbackTransactionAsync(CancellationToken cancellationToken = default)
+    {
+        await context.Database.RollbackTransactionAsync(cancellationToken);
+    }
 }

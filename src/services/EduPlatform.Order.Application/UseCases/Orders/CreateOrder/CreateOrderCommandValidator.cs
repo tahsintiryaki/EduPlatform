@@ -23,10 +23,9 @@ public class CreateOrderCommandValidator : AbstractValidator<CreateOrderCommand>
 
         RuleForEach(x => x.Items)
             .SetValidator(new OrderItemDtoValidator());
-
-
-        RuleFor(x => x.Payment).NotNull().WithMessage("{PropertyName} is required")
-            .SetValidator(new PaymentDtoValidator());
+        
+        // RuleFor(x => x.Payment).NotNull().WithMessage("{PropertyName} is required")
+        //     .SetValidator(new PaymentDtoValidator());
     }
 }
 

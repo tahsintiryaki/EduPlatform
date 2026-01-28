@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EduPlatform.Payment.API.Feature.Payments.GetStatus;
 
-public class GetPaymentStatusQueryHandler(AppDbContext context)
+public class GetPaymentStatusQueryHandler(InboxDbContext context)
     : IRequestHandler<GetPaymentStatusRequest, ServiceResult<GetPaymentStatusResponse>>
 {
     public async Task<ServiceResult<GetPaymentStatusResponse>> Handle(GetPaymentStatusRequest request,

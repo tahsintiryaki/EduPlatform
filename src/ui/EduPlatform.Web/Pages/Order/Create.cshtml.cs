@@ -9,9 +9,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EduPlatform.Web.Pages.Order;
 
-public class CreateModel(BasketService basketService, OrderService orderService) : BasePageModel
+public class CreateModel(BasketService basketService, OrderService orderService, PaymentService paymentService)
+    : BasePageModel
 {
     [BindProperty] public CreateOrderViewModel CreateOrderViewModel { get; set; } = CreateOrderViewModel.Empty;
+    [BindProperty] public CreatePaymentViewModel CreatePaymentViewModel { get; set; } = CreatePaymentViewModel.Empty;
 
     public async Task<IActionResult> OnGetAsync()
     {
@@ -25,13 +27,22 @@ public class CreateModel(BasketService basketService, OrderService orderService)
     {
         await LoadInitialFormData();
         if (!ModelState.IsValid) return Page();
+        
+        var orderResult = await orderService.CreateOrder(CreateOrderViewModel);
 
+        if (orderResult.IsFail)
+        {
+            return ErrorPage(orderResult);
+        }
 
-        var result = await orderService.CreateOrder(CreateOrderViewModel);
+        //Request payment service
+        var paymentResult = await paymentService.CreatePayment(orderResult!.Data!.OrderCode,orderResult!.Data!.Amount,CreatePaymentViewModel);
+        if (paymentResult.IsFail)
+        {
+            return ErrorPage(paymentResult);
+        }
 
-        return result.IsFail
-            ? ErrorPage(result)
-            : SuccessPage("order created successfully", "/Order/Result");
+        return SuccessPage("order created successfully", "/Order/Result");
     }
 
     private async Task LoadInitialFormData()

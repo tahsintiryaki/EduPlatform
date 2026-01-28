@@ -109,6 +109,18 @@ paymentApi.WithReference(rabbitMq).WaitFor(rabbitMq)
     .WithReference(keycloakEndpoint).WaitFor(keycloak)
     .WithReference(postgresPaymentDb).WaitFor(postgresPaymentDb);
 
+#region Payment-Outbox-Worker-Service
+
+
+var paymentOutboxWorkerService =
+    builder.AddProject<Projects.EduPlatform_Payment_Outbox_Worker_Service>("eduplatform-payment-outbox-worker-service");
+paymentOutboxWorkerService.WithReference(postgresPaymentDb).WaitFor(postgresPaymentDb).WithReference(rabbitMq)
+    .WaitFor(rabbitMq)
+    .WithReference(keycloakEndpoint).WaitFor(keycloak);
+
+#endregion
+
+
 #endregion
 
 #region Order-API
@@ -123,16 +135,16 @@ var orderApi = builder.AddProject<Projects.EduPlatform_Order_API>("eduplatform-o
 
 orderApi.WithReference(sqlserverOrderDb).WaitFor(sqlserverOrderDb).WithReference(rabbitMq).WaitFor(rabbitMq)
     .WithReference(keycloakEndpoint).WaitFor(keycloak);
-#region Order-Outbox-Worker-Service
-
-
-var orderOutboxWorkerService =
-    builder.AddProject<Projects.EduPlatform_Order_Outbox_Worker_Service>("eduplatform-order-outbox-worker-service");
-orderOutboxWorkerService.WithReference(sqlserverOrderDb).WaitFor(sqlserverOrderDb).WithReference(rabbitMq)
-    .WaitFor(rabbitMq)
-    .WithReference(keycloakEndpoint).WaitFor(keycloak);
-
-#endregion
+// #region Order-Outbox-Worker-Service
+//
+//
+// var orderOutboxWorkerService =
+//     builder.AddProject<Projects.EduPlatform_Order_Outbox_Worker_Service>("eduplatform-order-outbox-worker-service");
+// orderOutboxWorkerService.WithReference(sqlserverOrderDb).WaitFor(sqlserverOrderDb).WithReference(rabbitMq)
+//     .WaitFor(rabbitMq)
+//     .WithReference(keycloakEndpoint).WaitFor(keycloak);
+//
+// #endregion
 
 #endregion
 

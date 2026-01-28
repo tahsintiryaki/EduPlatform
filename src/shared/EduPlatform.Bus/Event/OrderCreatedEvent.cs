@@ -1,3 +1,3 @@
 ﻿namespace EduPlatform.Bus.Event;
 
-public record OrderCreatedEvent(Guid IdempotentToken, Guid OrderId, Guid UserId);
+public record OrderCreatedEvent(Guid IdempotentToken, string OrderCode, Guid UserId);

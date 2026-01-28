@@ -1,11 +1,10 @@
-﻿ 
-using AutoMapper;
+﻿using AutoMapper;
 using EduPlatform.Order.Application.Contracts.Repositories;
 using EduPlatform.Order.Application.UseCases.Orders.CreateOrder;
 using EduPlatform.Shared;
 using EduPlatform.Shared.Services;
 using MediatR;
- 
+
 namespace EduPlatform.Order.Application.UseCases.Orders.GetOrders;
 
 public class GetOrdersQueryHandler(IIdentityService identityService, IOrderRepository orderRepository, IMapper mapper)
@@ -18,7 +17,8 @@ public class GetOrdersQueryHandler(IIdentityService identityService, IOrderRepos
 
 
         var response = orders.Select(o =>
-            new GetOrdersResponse(o.Created, o.TotalPrice, mapper.Map<List<OrderItemDto>>(o.OrderItems))).ToList();
+                new GetOrdersResponse(o.Created, o.TotalPrice, o.Status.ToString(), mapper.Map<List<OrderItemDto>>(o.OrderItems)))
+            .ToList();
 
 
         return ServiceResult<List<GetOrdersResponse>>.SuccessAsOk(response);

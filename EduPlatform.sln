@@ -68,6 +68,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduPlatform.AppHost", "EduP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduPlatform.ServiceDefaults", "EduPlatform.ServiceDefaults\EduPlatform.ServiceDefaults.csproj", "{45DF26E4-CB92-49D4-BBCB-293FC66486C6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduPlatform.Payment.Outbox.Worker.Service", "src\services\EduPlatform.Payment.Outbox.Worker.Service\EduPlatform.Payment.Outbox.Worker.Service.csproj", "{1F444993-EC1D-428A-B106-DFA423A5B547}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -102,6 +104,7 @@ Global
 		{E38CC430-8589-47F8-AC30-EEF871882A71} = {2403F4EA-19CD-4ED5-B611-731D48E80423}
 		{6CA0D4F8-739C-4587-BD2A-81F7EF4EAF1E} = {6836797D-F64A-4CC3-93F9-CC866F1E5371}
 		{E9ABD386-C6F6-41E4-80C3-88C9D48F5CF2} = {6CA0D4F8-739C-4587-BD2A-81F7EF4EAF1E}
+		{1F444993-EC1D-428A-B106-DFA423A5B547} = {AA9D6CFD-FD02-4BB8-BBF2-8C3FF4E25BA8}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{17EE83FB-72DC-4932-BDEE-E12CE6E5505A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -168,5 +171,9 @@ Global
 		{E9ABD386-C6F6-41E4-80C3-88C9D48F5CF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9ABD386-C6F6-41E4-80C3-88C9D48F5CF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9ABD386-C6F6-41E4-80C3-88C9D48F5CF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F444993-EC1D-428A-B106-DFA423A5B547}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F444993-EC1D-428A-B106-DFA423A5B547}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F444993-EC1D-428A-B106-DFA423A5B547}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F444993-EC1D-428A-B106-DFA423A5B547}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

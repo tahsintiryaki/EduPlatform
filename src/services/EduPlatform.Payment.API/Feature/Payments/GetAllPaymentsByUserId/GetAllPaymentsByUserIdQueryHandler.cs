@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EduPlatform.Payment.API.Feature.Payments.GetAllPaymentsByUserId;
 
-public class GetAllPaymentsByUserIdQueryHandler(AppDbContext context, IIdentityService identityService)
+public class GetAllPaymentsByUserIdQueryHandler(InboxDbContext context, IIdentityService identityService)
     : IRequestHandler<GetAllPaymentsByUserIdQuery, ServiceResult<List<GetAllPaymentsByUserIdResponse>>>
 {
     public async Task<ServiceResult<List<GetAllPaymentsByUserIdResponse>>> Handle(

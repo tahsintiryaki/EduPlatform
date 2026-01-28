@@ -14,13 +14,13 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<OrderItem> OrderItems { get; set; }
     public DbSet<Address> Addresses { get; set; }
     public DbSet<OrderOutbox> OrderOutboxes { get; set; }
+    public DbSet<PaymentInbox> PaymentInboxes { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(OrderConfiguration).Assembly);
-
-
+        
         base.OnModelCreating(modelBuilder);
     }
 }
