@@ -111,7 +111,6 @@ paymentApi.WithReference(rabbitMq).WaitFor(rabbitMq)
 
 #region Payment-Outbox-Worker-Service
 
-
 var paymentOutboxWorkerService =
     builder.AddProject<Projects.EduPlatform_Payment_Outbox_Worker_Service>("eduplatform-payment-outbox-worker-service");
 paymentOutboxWorkerService.WithReference(postgresPaymentDb).WaitFor(postgresPaymentDb).WithReference(rabbitMq)
@@ -119,7 +118,6 @@ paymentOutboxWorkerService.WithReference(postgresPaymentDb).WaitFor(postgresPaym
     .WithReference(keycloakEndpoint).WaitFor(keycloak);
 
 #endregion
-
 
 #endregion
 
@@ -129,25 +127,24 @@ var sqlserverPassword = builder.AddParameter("SQLSERVER-SA-PASSWORD");
 
 
 var sqlserverOrderDb = builder.AddSqlServer("sqlserver-db-order", sqlserverPassword, 1433)
-    .WithDataVolume("sqlserver.db.order.volume").AddDatabase("order-db");
+    .WithLifetime(ContainerLifetime.Persistent).WithDataVolume("sqlserver.db.order.volume").AddDatabase("order-db");
 
 var orderApi = builder.AddProject<Projects.EduPlatform_Order_API>("eduplatform-order-api");
 
 orderApi.WithReference(sqlserverOrderDb).WaitFor(sqlserverOrderDb).WithReference(rabbitMq).WaitFor(rabbitMq)
     .WithReference(keycloakEndpoint).WaitFor(keycloak);
-// #region Order-Outbox-Worker-Service
-//
-//
-// var orderOutboxWorkerService =
-//     builder.AddProject<Projects.EduPlatform_Order_Outbox_Worker_Service>("eduplatform-order-outbox-worker-service");
-// orderOutboxWorkerService.WithReference(sqlserverOrderDb).WaitFor(sqlserverOrderDb).WithReference(rabbitMq)
-//     .WaitFor(rabbitMq)
-//     .WithReference(keycloakEndpoint).WaitFor(keycloak);
-//
-// #endregion
+
+#region Order-Outbox-Worker-Service
+
+var orderOutboxWorkerService =
+    builder.AddProject<Projects.EduPlatform_Order_Outbox_Worker_Service>("eduplatform-order-outbox-worker-service");
+orderOutboxWorkerService.WithReference(sqlserverOrderDb).WaitFor(sqlserverOrderDb).WithReference(rabbitMq)
+    .WaitFor(rabbitMq)
+    .WithReference(keycloakEndpoint).WaitFor(keycloak);
 
 #endregion
 
+#endregion
 
 
 #region Gateway-API

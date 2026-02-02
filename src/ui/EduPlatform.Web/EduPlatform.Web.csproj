@@ -9,6 +9,7 @@
     <ItemGroup>
       <PackageReference Include="Duende.IdentityModel" Version="8.0.0" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.11" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.12" />
       <PackageReference Include="Refit.HttpClientFactory" Version="9.0.2" />
     </ItemGroup>
 

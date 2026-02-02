@@ -23,9 +23,9 @@ public class CreateOrderCommandValidator : AbstractValidator<CreateOrderCommand>
 
         RuleForEach(x => x.Items)
             .SetValidator(new OrderItemDtoValidator());
-        
-        // RuleFor(x => x.Payment).NotNull().WithMessage("{PropertyName} is required")
-        //     .SetValidator(new PaymentDtoValidator());
+
+        RuleFor(x => x.Payment).NotNull().WithMessage("{PropertyName} is required")
+            .SetValidator(new PaymentDtoValidator());
     }
 }
 
@@ -67,16 +67,13 @@ public class PaymentDtoValidator : AbstractValidator<PaymentDto>
 {
     public PaymentDtoValidator()
     {
-        RuleFor(x => x.CardNumber)
+        RuleFor(x => x.IdempotentToken)
             .NotEmpty().WithMessage("{PropertyName} cannot be empty");
 
-        RuleFor(x => x.CardHolderName)
+        RuleFor(x => x.Type)
             .NotEmpty().WithMessage("{PropertyName} cannot be empty");
 
-        RuleFor(x => x.Cvc)
-            .NotEmpty().WithMessage("{PropertyName} cannot be empty");
-
-        RuleFor(x => x.Expiration)
+        RuleFor(x => x.Token)
             .NotEmpty().WithMessage("{PropertyName} cannot be empty");
 
         RuleFor(x => x.Amount)

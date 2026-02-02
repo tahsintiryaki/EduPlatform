@@ -7,9 +7,9 @@ using MassTransit;
 
 namespace EduPlatform.Basket.API.Consumers;
 
-public class DeleteBasketOnOrderCreatedEventConsumer(IServiceProvider serviceProvider) : IConsumer<OrderCreatedEvent>
+public class DeleteBasketOnOrderCreatedEventConsumer(IServiceProvider serviceProvider) : IConsumer<PaymentSucceededEvent>
 {
-    public async Task Consume(ConsumeContext<OrderCreatedEvent> context)
+    public async Task Consume(ConsumeContext<PaymentSucceededEvent> context)
     {
         using var scope = serviceProvider.CreateScope();
         var basketService = scope.ServiceProvider.GetRequiredService<BasketService>();

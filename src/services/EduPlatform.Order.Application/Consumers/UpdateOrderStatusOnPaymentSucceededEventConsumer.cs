@@ -9,7 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace EduPlatform.Order.Application.Consumers;
 
-public class UpdateOrderStatusOnPaymentSucceededEventConsumer(IPublishEndpoint publishEndpoint,
+public class UpdateOrderStatusOnPaymentSucceededEventConsumer(
+    IPublishEndpoint publishEndpoint,
     IPaymentInboxRepository paymentInboxRepository,
     IOrderRepository orderRepository,
     IUnitOfWork unitOfWork)
@@ -17,47 +18,33 @@ public class UpdateOrderStatusOnPaymentSucceededEventConsumer(IPublishEndpoint p
 {
     public async Task Consume(ConsumeContext<PaymentSucceededEvent> context)
     {
-        try
-        {
-          
-            var idempotentToken = context.Message.IdempotentToken;
-            var paymentInbox = paymentInboxRepository.Where(t=>t.Id==idempotentToken).FirstOrDefault();
-            // await unitOfWork.BeginTransactionAsync();
-            if (paymentInbox is null)
-            {
-                //Inbox table insert
-                paymentInbox = new PaymentInbox()
-                {
-                    Id = idempotentToken,
-                    Processed = false,
-                    ProcessDate = null,
-                    PayloadJson = JsonSerializer.Serialize(context.Message)
-                };
-                paymentInboxRepository.Add(paymentInbox);
-            }
+        var idempotentToken = context.Message.IdempotentToken;
+        var paymentInbox = paymentInboxRepository.Where(t => t.Id == idempotentToken).FirstOrDefault();
 
-            if (paymentInbox.Processed == true)
-            {
-                await unitOfWork.CommitAsync();
-                return;
-            }
-            
-            //Order status will update
-            await orderRepository.SetStatusWithOrderId(context.Message.OrderCode, context.Message.PaymentId,
-                OrderStatus.Paid);
-            paymentInbox.Processed = true;
-            paymentInbox.ProcessDate = DateTime.UtcNow;
-            Console.WriteLine($"{context.Message.OrderCode} order status updated");
-            await unitOfWork.CommitAsync();
-            //for delete basket
-            OrderCreatedEvent orderCreatedEvent = new OrderCreatedEvent(idempotentToken, context.Message.OrderCode,context.Message.UserId);
-            await publishEndpoint.Publish(orderCreatedEvent);
-            
-        }
-        catch (Exception e)
+        if (paymentInbox is null)
         {
-            // await unitOfWork.RoolbackTransactionAsync();
-            throw;
+            //Inbox table insert
+            paymentInbox = new PaymentInbox()
+            {
+                Id = idempotentToken,
+                Processed = false,
+                ProcessDate = null,
+                PayloadJson = JsonSerializer.Serialize(context.Message)
+            };
+            paymentInboxRepository.Add(paymentInbox);
         }
+
+        if (paymentInbox.Processed == true)
+        {
+            return;
+        }
+
+        //Order status will update
+        await orderRepository.SetStatus(context.Message.OrderCode, context.Message.PaymentId,
+            OrderStatus.Paid);
+        paymentInbox.Processed = true;
+        paymentInbox.ProcessDate = DateTime.UtcNow;
+        Console.WriteLine($"{context.Message.OrderCode} order status updated");
+        await unitOfWork.CommitAsync();
     }
 }

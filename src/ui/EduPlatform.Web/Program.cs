@@ -113,7 +113,7 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
 }
-
+app.UseExceptionHandler("/Error");
 app.UseRouting();
 
 app.UseAuthentication();

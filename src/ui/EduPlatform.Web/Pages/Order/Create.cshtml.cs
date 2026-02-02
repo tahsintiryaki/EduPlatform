@@ -13,8 +13,7 @@ public class CreateModel(BasketService basketService, OrderService orderService,
     : BasePageModel
 {
     [BindProperty] public CreateOrderViewModel CreateOrderViewModel { get; set; } = CreateOrderViewModel.Empty;
-    [BindProperty] public CreatePaymentViewModel CreatePaymentViewModel { get; set; } = CreatePaymentViewModel.Empty;
-
+    
     public async Task<IActionResult> OnGetAsync()
     {
         await LoadInitialFormData();
@@ -32,15 +31,15 @@ public class CreateModel(BasketService basketService, OrderService orderService,
 
         if (orderResult.IsFail)
         {
-            return ErrorPage(orderResult);
+            return ErrorPage(orderResult,"/Error");
         }
 
-        //Request payment service
-        var paymentResult = await paymentService.CreatePayment(orderResult!.Data!.OrderCode,orderResult!.Data!.Amount,CreatePaymentViewModel);
-        if (paymentResult.IsFail)
-        {
-            return ErrorPage(paymentResult);
-        }
+        // //Request payment service
+        // var paymentResult = await paymentService.CreatePayment(orderResult.Data!.IdempotentToken, orderResult!.Data!.OrderCode,orderResult!.Data!.Amount,PaymentViewModel);
+        // if (paymentResult.IsFail)
+        // {
+        //     return ErrorPage(paymentResult,"/Error");
+        // }
 
         return SuccessPage("order created successfully", "/Order/Result");
     }

@@ -26,8 +26,9 @@ public class OrderOutboxPublishJob(IOrderOutboxRepository orderOutboxRepository,
                 orderOutboxRepository.Update(orderOutbox);
                 await unitOfWork.CommitAsync();
             }
+            await Console.Out.WriteLineAsync($" {orderCreatedEvent.OrderCode} orderCreatedEvent published.");
         }
-        await Console.Out.WriteLineAsync("Order outbox table checked!");
+       
     }
     
 }
