@@ -29,7 +29,7 @@ builder.Services.AddCommonServiceExt(typeof(OrderApplicationAssembly));
 // });
 
 // db name is same from aspire order api configuration
-builder.AddSqlServerDbContext<AppDbContext>("order-db");
+builder.AddSqlServerDbContext<AppDbContext>("SqlServer");
 builder.Services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderOutboxRepository, OrderOutboxRepository>();

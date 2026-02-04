@@ -3,6 +3,7 @@ using System;
 using EduPlatform.Payment.API.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EduPlatform.Payment.API.Migrations
 {
     [DbContext(typeof(InboxDbContext))]
-    partial class InboxDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260130132149_PaymentTokenAdded")]
+    partial class PaymentTokenAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

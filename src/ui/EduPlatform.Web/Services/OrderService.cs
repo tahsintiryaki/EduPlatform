@@ -15,23 +15,21 @@ public class OrderService(IOrderRefitService orderService, ILogger<OrderService>
 {
     public async Task<ServiceResult<CreateOrderResponse>> CreateOrder(CreateOrderViewModel viewModel)
     {
+     
+        var idempotentToken = Guid.NewGuid();
         //createAddressDto
         var address = new AddressDto(viewModel.Address.Province, viewModel.Address.District,
             viewModel.Address.Street, viewModel.Address.ZipCode, viewModel.Address.Line);
 
-
-        //paymentDto
-        // var payment = new PaymentDto(viewModel.Payment.CardNumber, viewModel.Payment.CardHolderName,
-        //     viewModel.Payment.ExpiryDate, viewModel.Payment.Cvv, viewModel.TotalPrice);
-
+        var payment = CreateFakePaymentModel(viewModel.Payment, viewModel.TotalPrice, idempotentToken);
 
         // orderItems
         var orderItems = viewModel.OrderItems.Select(x => new OrderItemDto(x.ProductId, x.ProductName, x.UnitPrice))
             .ToList();
 
 
-        var createOrderRequest = new CreateOrderRequest(viewModel.DiscountRate, address, orderItems);
-
+        var createOrderRequest =
+            new CreateOrderRequest(idempotentToken, viewModel.DiscountRate, address, payment, orderItems);
 
         var response = await orderService.CreateOrder(createOrderRequest);
 
@@ -72,7 +70,7 @@ public class OrderService(IOrderRefitService orderService, ILogger<OrderService>
         {
             var newOrderHistory =
                 new OrderHistoryViewModel(orderResponse.Created.ToLongDateString(),
-                    orderResponse.TotalPrice.ToString("C"),orderResponse.OrderStatus);
+                    orderResponse.TotalPrice.ToString("C"), orderResponse.OrderStatus);
 
             foreach (var orderItem in orderResponse.Items)
                 newOrderHistory.AddItem(orderItem.ProductId, orderItem.ProductName, orderItem.UnitPrice);
@@ -82,5 +80,17 @@ public class OrderService(IOrderRefitService orderService, ILogger<OrderService>
 
 
         return ServiceResult<List<OrderHistoryViewModel>>.Success(orderHistoryList);
+    }
+
+    private static PaymentDto CreateFakePaymentModel(PaymentViewModel viewModel, decimal amount, Guid idempotentToken)
+    {
+        // ExpiryDate parsing (MM/YY veya MM/YYYY)
+        var parts = viewModel.ExpiryDate.Split('/');
+        var expMonth = int.Parse(parts[0]);
+        var expYear = parts[1].Length == 2
+            ? 2000 + int.Parse(parts[1])
+            : int.Parse(parts[1]);
+        var paymentToken = $"pm_fake_{Guid.NewGuid():N}".Substring(0, 18);
+        return new PaymentDto(idempotentToken, "card", paymentToken, amount);
     }
 }

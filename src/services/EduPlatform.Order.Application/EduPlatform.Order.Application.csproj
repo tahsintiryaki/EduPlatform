@@ -11,4 +11,14 @@
       <ProjectReference Include="..\EduPlatform.Order.Domain\EduPlatform.Order.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.12" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Microsoft.Data.SqlClient">
+        <HintPath>..\EduPlatform.Order.API\bin\Debug\net9.0\Microsoft.Data.SqlClient.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>

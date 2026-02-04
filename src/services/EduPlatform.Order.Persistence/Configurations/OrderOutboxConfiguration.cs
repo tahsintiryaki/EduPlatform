@@ -14,7 +14,8 @@ internal class OrderOutboxConfiguration : IEntityTypeConfiguration<Domain.Entiti
     public void Configure(EntityTypeBuilder<OrderOutbox> builder)
     {
         builder.HasKey(x => x.Id);
-        builder.Property(x => x.Id).HasColumnName("IdempotentToken");
+        builder.HasIndex(x => new { x.IdempotentToken, x.Type })
+            .IsUnique();
 
 
     }

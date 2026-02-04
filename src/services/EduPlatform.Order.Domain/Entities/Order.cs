@@ -5,7 +5,8 @@ namespace EduPlatform.Order.Domain.Entities;
 public class Order : BaseEntity<Guid>
 {
     public string Code { get; set; } = null!;
-
+    
+    public Guid IdempotentToken { get; set; }
     public DateTime Created { get; set; }
 
     public Guid BuyerId { get; set; }
@@ -35,11 +36,12 @@ public class Order : BaseEntity<Guid>
     }
 
 
-    public static Order CreateUnPaidOrder(Guid buyerId, float? disCountRate, int addressId)
+    public static Order CreateUnPaidOrder(Guid buyerId, float? disCountRate, int addressId, Guid idempotentToken)
     {
         return new Order
         {
             Id = Guid.CreateVersion7(),
+            IdempotentToken = idempotentToken,
             Code = GenerateCode(),
             BuyerId = buyerId,
             Created = DateTime.Now,

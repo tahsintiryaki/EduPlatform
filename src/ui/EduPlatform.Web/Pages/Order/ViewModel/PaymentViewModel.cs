@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EduPlatform.Web.Pages.Order.ViewModel;
 
-public record CreatePaymentViewModel
+public record PaymentViewModel
 {
     [Display(Name = "Card Number")] public string CardNumber { get; set; } = null!;
 
@@ -18,5 +18,5 @@ public record CreatePaymentViewModel
 
     [Display(Name = "Payment Amount")] public decimal Amount { get; set; }
 
-    public static CreatePaymentViewModel Empty => new();
+    public static PaymentViewModel Empty => new();
 }

@@ -41,25 +41,25 @@
 
                         <h3>Payment Information</h3>
                         <div class="mb-3">
-                            <label asp-for="CreatePaymentViewModel.CardHolderName" class="form-label"></label>
-                            <input class="form-control" asp-for="CreatePaymentViewModel.CardHolderName" value="ahmet yıldız">
-                            <span asp-validation-for="CreatePaymentViewModel.CardHolderName" class="text-danger"></span>
+                            <label asp-for="CreateOrderViewModel.Payment.CardHolderName" class="form-label"></label>
+                            <input class="form-control" asp-for="CreateOrderViewModel.Payment.CardHolderName" value="ahmet yıldız">
+                            <span asp-validation-for="CreateOrderViewModel.Payment.CardHolderName" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
-                            <label asp-for="CreatePaymentViewModel.CardNumber" class="form-label"></label>
-                            <input class="form-control" asp-for="CreatePaymentViewModel.CardNumber" value="4111111111111111">
-                            <span asp-validation-for="CreatePaymentViewModel.CardNumber" class="text-danger"></span>
+                            <label asp-for="CreateOrderViewModel.Payment.CardNumber" class="form-label"></label>
+                            <input class="form-control" asp-for="CreateOrderViewModel.Payment.CardNumber" value="4111111111111111">
+                            <span asp-validation-for="CreateOrderViewModel.Payment.CardNumber" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="CreatePaymentViewModel.Cvv" class="form-label"></label>
-                            <input class="form-control" asp-for="CreatePaymentViewModel.Cvv" value="123">
-                            <span asp-validation-for="CreatePaymentViewModel.Cvv" class="text-danger"></span>
+                            <label asp-for="CreateOrderViewModel.Payment.Cvv" class="form-label"></label>
+                            <input class="form-control" asp-for="CreateOrderViewModel.Payment.Cvv" value="123">
+                            <span asp-validation-for="CreateOrderViewModel.Payment.Cvv" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
-                            <label asp-for="CreatePaymentViewModel.ExpiryDate" class="form-label"></label>
-                            <input class="form-control" asp-for="CreatePaymentViewModel.ExpiryDate" value="05/22">
-                            <span asp-validation-for="CreatePaymentViewModel.ExpiryDate" class="text-danger"></span>
+                            <label asp-for="CreateOrderViewModel.Payment.ExpiryDate" class="form-label"></label>
+                            <input class="form-control" asp-for="CreateOrderViewModel.Payment.ExpiryDate" value="05/22">
+                            <span asp-validation-for="CreateOrderViewModel.Payment.ExpiryDate" class="text-danger"></span>
                         </div>
 
 

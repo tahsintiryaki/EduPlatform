@@ -22,44 +22,50 @@ public class CreatePaymentCommandHandler(
     public async Task<ServiceResult<CreatePaymentResponse>> Handle(CreatePaymentCommand request,
         CancellationToken cancellationToken)
     {
-        var userId = identityService.UserId;
+        
+        var newPaymentId = Guid.Empty;
         // var userName = identityService.UserName;
         // var roles = identityService.Roles;
-        
-        var (isSuccess, errorMessage) = await ExternalPaymentProcessAsync(request);
-        
-        if (!isSuccess)
-            return ServiceResult<CreatePaymentResponse>.Error("Payment Failed", errorMessage!,
-                HttpStatusCode.BadRequest);
-        var idempotentToken = NewId.NextGuid();
-
-        var newPayment = new Repositories.Payment(userId, request.OrderCode, request.Amount);
-        newPayment.SetStatus(PaymentStatus.Success);
-
-        PaymentSucceededEvent paymentSucceededEvent = new PaymentSucceededEvent(
-            idempotentToken,
-             newPayment.OrderCode,
-             newPayment.Id,
-            userId);
-        appDbContext.Payments.Add(newPayment);
-        var paymentOutbox = new PaymentOutbox()
+        var existingPayment = appDbContext.Payments.FirstOrDefault(x => x.IdempotentToken == request.IdempotentToken);
+        if (existingPayment is null)
         {
-            IdempotentToken = NewId.NextGuid(),
-            OccuredOn = DateTime.UtcNow,
-            Payload = JsonSerializer.Serialize(paymentSucceededEvent),
-            ProcessedDate = null,
-            Type = typeof(PaymentSucceededEvent).Name
-        };
-        await appDbContext.PaymentOutboxes.AddAsync(paymentOutbox);
-        await appDbContext.SaveChangesAsync(cancellationToken);
+            var (isSuccess, errorMessage) = await ExternalPaymentProcessAsync(request);
 
-        Console.WriteLine($"{newPayment.OrderCode}Payment Succeeded Event added to Payment Outbox");
+            if (!isSuccess)
+                return ServiceResult<CreatePaymentResponse>.Error("Payment Failed", errorMessage!,
+                    HttpStatusCode.BadRequest);
+
+            var newPayment =
+                new Repositories.Payment(request.UserId, request.OrderCode, request.Amount, request.IdempotentToken,request!.PaymentToken!);
+            newPayment.SetStatus(PaymentStatus.Success);
+            newPaymentId = newPayment.Id;
+            PaymentSucceededEvent paymentSucceededEvent = new PaymentSucceededEvent(
+                request.IdempotentToken,
+                newPayment.OrderCode,
+                newPayment.Id,
+                request.UserId);
+            appDbContext.Payments.Add(newPayment);
+            var paymentOutbox = new PaymentOutbox()
+            {
+                IdempotentToken = request.IdempotentToken, //it comes from UI while creating order.
+                OccuredOn = DateTime.UtcNow,
+                Payload = JsonSerializer.Serialize(paymentSucceededEvent),
+                ProcessedDate = null,
+                Type = typeof(PaymentSucceededEvent).Name
+            };
+            await appDbContext.PaymentOutboxes.AddAsync(paymentOutbox, cancellationToken);
+            await appDbContext.SaveChangesAsync(cancellationToken);
+
+            Console.WriteLine($"{newPayment.OrderCode}Payment Succeeded Event added to Payment Outbox");
+        }
+
         return ServiceResult<CreatePaymentResponse>.SuccessAsOk(
-            new CreatePaymentResponse(newPayment.Id, true, null));
+            new CreatePaymentResponse(newPaymentId, true, null));
     }
 
 
-    private async Task<(bool isSuccess, string? errorMessage)> ExternalPaymentProcessAsync(CreatePaymentCommand createPaymentCommand)
+    private async Task<(bool isSuccess, string? errorMessage)> ExternalPaymentProcessAsync(
+        CreatePaymentCommand createPaymentCommand)
     {
         // Simulate external payment processing logic
         await Task.Delay(1000); // Simulating a delay for the external service call
