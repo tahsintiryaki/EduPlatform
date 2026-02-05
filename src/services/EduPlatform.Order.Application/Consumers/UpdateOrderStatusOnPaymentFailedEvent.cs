@@ -14,5 +14,7 @@ public class UpdateOrderStatusOnPaymentFailedEvent(IOrderRepository orderReposit
         {
             orderRepository.SetStatus(context.Message.OrderCode, context.Message.PaymentId, OrderStatus.Cancel);
         }
+
+        return  Task.CompletedTask;
     }
 }
