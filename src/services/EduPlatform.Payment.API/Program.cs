@@ -1,7 +1,9 @@
 using EduPlatform.Payment.API;
 using EduPlatform.Payment.API.Feature.Payments;
 using EduPlatform.Payment.API.Repositories;
+using EduPlatform.Shared.CorrelationContext;
 using EduPlatform.Shared.Extensions;
+using EduPlatform.Shared.Middleware;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +20,7 @@ builder.Services.AddAuthenticationAndAuthorizationExt(builder.Configuration);
 
 builder.Services.AddVersioningExt();
 builder.Services.AddCommonServiceExt(typeof(PaymentAssembly));
+
  // builder.Services.AddDbContext<AppDbContext>(options => { options.UseInMemoryDatabase("payment-in-memory-db"); });
 builder.Services.AddDbContext<InboxDbContext>(options =>
 {
@@ -31,7 +34,7 @@ var app = builder.Build();
 app.MapDefaultEndpoints();
 app.UseExceptionHandler(x => { });
 app.AddPaymentGroupEndpointExt(app.AddVersionSetExt());
- 
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

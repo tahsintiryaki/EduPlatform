@@ -28,6 +28,9 @@ namespace EduPlatform.Payment.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("CorrelationId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("PayloadJson")
                         .IsRequired()
                         .HasColumnType("text");
@@ -82,6 +85,9 @@ namespace EduPlatform.Payment.API.Migrations
                 {
                     b.Property<Guid>("IdempotentToken")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CorrelationId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("OccuredOn")

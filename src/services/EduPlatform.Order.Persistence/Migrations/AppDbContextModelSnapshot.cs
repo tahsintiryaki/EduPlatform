@@ -135,6 +135,9 @@ namespace EduPlatform.Order.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("CorrelationId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("IdempotentToken")
                         .HasColumnType("uniqueidentifier");
 

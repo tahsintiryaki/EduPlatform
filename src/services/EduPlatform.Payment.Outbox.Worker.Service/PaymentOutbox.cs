@@ -6,6 +6,8 @@ public class PaymentOutbox
 {
     [Key]
     public Guid IdempotentToken { get; set; }
+    
+    public Guid CorrelationId { get; set; }
     public DateTime OccuredOn { get; set; }
     public DateTime? ProcessedDate { get; set; }
     public string Type { get; set; }

@@ -22,7 +22,7 @@ public class PaymentOutboxPublishJob(PaymentOutboxReadDbContext _context, IPubli
             if (paymentSucceededEvent != null)
             {
                 await publishEndpoint.Publish(paymentSucceededEvent);
-                Console.WriteLine($"{paymentSucceededEvent.OrderCode}Payment Succeeded Event pushed");
+                Console.WriteLine($"CorrelationId:{paymentOutbox.CorrelationId} - {paymentSucceededEvent.OrderCode}Payment Succeeded Event pushed");
                 paymentOutbox.ProcessedDate = DateTime.UtcNow;
                 // _context.PaymentOutboxes.Update(paymentOutbox);
                 await _context.SaveChangesAsync();

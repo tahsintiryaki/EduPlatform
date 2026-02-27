@@ -6,6 +6,7 @@ public class OrderInbox
 {
     [Key]
     public Guid IdempotentToken { get; set; }
+    public Guid CorrelationId { get; set; }
     public bool? Processed { get; set; }
     public DateTime? ProcessDate { get; set; }
     public string PayloadJson { get; set; }

@@ -16,17 +16,20 @@ public class ReceivePaymentOnOrderCreatedEventConsumer(InboxDbContext inboxDbCon
         try
         {
             var idempotentToken = context.Message.IdempotentToken;
+            var cid = context.Message.CorrelationId;
             var result = await inboxDbContext.OrderInboxes.AnyAsync(i => i.IdempotentToken == idempotentToken);
             if (!result)
             {
                 await inboxDbContext.OrderInboxes.AddAsync(new OrderInbox()
                 {
                     IdempotentToken = context.Message.IdempotentToken,
+                    CorrelationId =  cid,
                     Processed = false,
                     ProcessDate = null,
                     PayloadJson = JsonSerializer.Serialize<OrderCreatedEvent>(context.Message),
                 });
                 await inboxDbContext.SaveChangesAsync();
+                Console.WriteLine($"CorrelationId: {context.CorrelationId} - Order consumed.");
             }
 
        
@@ -38,12 +41,12 @@ public class ReceivePaymentOnOrderCreatedEventConsumer(InboxDbContext inboxDbCon
 
                 #region paymentProcess
 
-                CreatePaymentCommand createPaymentCommand = new CreatePaymentCommand(idempotentToken,
+                CreatePaymentCommand createPaymentCommand = new CreatePaymentCommand(idempotentToken,orderInbox.CorrelationId,
                     orderCreatedEvent!.OrderCode, orderCreatedEvent.PaymentToken,orderCreatedEvent.UserId, orderCreatedEvent.Amount);
                 await mediator.Send(createPaymentCommand); 
                 #endregion
 
-                Console.WriteLine($"{orderCreatedEvent!.OrderCode} için ödeme işlemi başarıyla tamamlanmıştır.");
+                Console.WriteLine($"CorrelationId: {orderCreatedEvent.CorrelationId} - OrderCode:{orderCreatedEvent!.OrderCode} için ödeme işlemi başarıyla tamamlanmıştır.");
                 orderInbox.Processed = true;
                 orderInbox.ProcessDate = DateTime.UtcNow;
                 await inboxDbContext.SaveChangesAsync();

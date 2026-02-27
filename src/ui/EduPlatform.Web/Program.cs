@@ -1,4 +1,5 @@
 using System.Globalization;
+using EduPlatform.Shared.Middleware;
 using EduPlatform.Web.DelegateHandlers;
 using EduPlatform.Web.ExceptionHandlers;
 using EduPlatform.Web.Extensions;
@@ -31,13 +32,12 @@ builder.Services.AddScoped<OrderService>();
 builder.Services.AddScoped<PaymentService>();
 builder.Services.AddScoped<AuthenticatedHttpClientHandler>();
 builder.Services.AddScoped<ClientAuthenticatedHttpClientHandler>();
+builder.Services.AddTransient<CorrelationIdDelegatingHandler>();
 builder.Services.AddExceptionHandler<UnauthorizedAccessExceptionHandler>();
+
 builder.Services
     .AddControllers()
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
-    });
+    .AddJsonOptions(options => { options.JsonSerializerOptions.PropertyNameCaseInsensitive = true; });
 builder.Services.AddRefitClient<ICatalogRefitService>().ConfigureHttpClient(configure =>
     {
         var microserviceOption = builder.Configuration.GetSection(nameof(MicroserviceOption)).Get<MicroserviceOption>();
@@ -66,7 +66,9 @@ builder.Services.AddRefitClient<IOrderRefitService>().ConfigureHttpClient(config
     {
         var microserviceOption = builder.Configuration.GetSection(nameof(MicroserviceOption)).Get<MicroserviceOption>();
         configure.BaseAddress = new Uri("http://eduplatform-order-api");
-    }).AddHttpMessageHandler<AuthenticatedHttpClientHandler>()
+    })
+    .AddHttpMessageHandler<CorrelationIdDelegatingHandler>()
+    .AddHttpMessageHandler<AuthenticatedHttpClientHandler>()
     .AddHttpMessageHandler<ClientAuthenticatedHttpClientHandler>();
 
 builder.Services.AddRefitClient<IPaymentRefitService>().ConfigureHttpClient(configure =>
@@ -75,7 +77,6 @@ builder.Services.AddRefitClient<IPaymentRefitService>().ConfigureHttpClient(conf
         configure.BaseAddress = new Uri("http://eduplatform-payment-api");
     }).AddHttpMessageHandler<AuthenticatedHttpClientHandler>()
     .AddHttpMessageHandler<ClientAuthenticatedHttpClientHandler>();
-
 
 
 builder.Services.AddAuthentication(configureOption =>
@@ -113,6 +114,9 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
 }
+
+//For correlationId
+app.UseMiddleware<CorrelationIdMiddleware>();
 app.UseExceptionHandler("/Error");
 app.UseRouting();
 
