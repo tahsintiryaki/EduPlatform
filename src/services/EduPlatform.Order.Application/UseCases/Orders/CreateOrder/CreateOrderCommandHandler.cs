@@ -6,21 +6,26 @@ using EduPlatform.Order.Application.Contracts.Repositories;
 using EduPlatform.Order.Application.UnitOfWork;
 using EduPlatform.Order.Domain.Entities;
 using EduPlatform.Shared;
+using EduPlatform.Shared.CorrelationContext;
 using EduPlatform.Shared.Services;
 using MassTransit;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 
 namespace EduPlatform.Order.Application.UseCases.Orders.CreateOrder;
 
 public class CreateOrderCommandHandler(
+    ICorrelationContext correlation,
     IOrderRepository orderRepository,
     IOrderOutboxRepository orderOutboxRepository,
     IIdentityService identityService,
     IPublishEndpoint publishEndpoint,
     IPaymentService paymentService,
+    ILogger<CreateOrderCommandHandler> logger,
     IUnitOfWork unitOfWork) : IRequestHandler<CreateOrderCommand, ServiceResult<CreateOrderResponse>>
 {
     // public async Task<ServiceResult<CreateOrderResponse>> Handle(CreateOrderCommand request,
@@ -120,9 +125,10 @@ public class CreateOrderCommandHandler(
             order.Address = newAddress;
 
             orderRepository.Add(order);
+            var cid = correlation.CorrelationId;
             OrderCreatedEvent orderCreatedEvent =
                 new OrderCreatedEvent(request.IdempotentToken, order.Code, request.Payment.Token, order.TotalPrice,
-                    identityService.UserId);
+                    identityService.UserId, cid);
             orderOutboxRepository.Add(new OrderOutbox
             {
                 Id = NewId.NextGuid(),
@@ -130,12 +136,13 @@ public class CreateOrderCommandHandler(
                 ProcessedDate = null,
                 Payload = JsonSerializer.Serialize(orderCreatedEvent),
                 Type = orderCreatedEvent.GetType().Name,
-                IdempotentToken = request.IdempotentToken // composite unique için şart
+                IdempotentToken = request.IdempotentToken, // composite unique için şart
+                CorrelationId = cid
             });
 
             // 3) Commit: write işlemlerinde request cancellation ile commit’i kesme
             await unitOfWork.CommitAsync(cancellationToken);
-
+            logger.LogInformation("Order created. CorrelationId={CorrelationId}", cid);
             return Success(order);
         }
         catch (DbUpdateException ex) when (ex.InnerException is SqlException sqlEx &&

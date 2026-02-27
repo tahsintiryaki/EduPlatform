@@ -8,7 +8,9 @@ using EduPlatform.Order.Application.UnitOfWork;
 using EduPlatform.Order.Persistence;
 using EduPlatform.Order.Persistence.Repositories;
 using EduPlatform.Order.Persistence.UnitOfWork;
+using EduPlatform.Shared.CorrelationContext;
 using EduPlatform.Shared.Extensions;
+using EduPlatform.Shared.Middleware;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,6 +42,9 @@ builder.Services.AddVersioningExt();
 builder.Services.AddAuthenticationAndAuthorizationExt(builder.Configuration);
 builder.Services.AddRefitConfigurationExt(builder.Configuration);
 builder.Services.AddOrderMasstransitExt(builder.Configuration);
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ICorrelationContext, HttpCorrelationContext>();
+
 // builder.Services.AddHostedService<CheckPaymentStatusOrderBackgroundService>();
 
 var app = builder.Build();
@@ -60,6 +65,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 app.UseAuthentication();
 app.UseAuthorization();
 

@@ -7,4 +7,5 @@ public class OrderOutbox:BaseEntity<Guid>
     public DateTime? ProcessedDate { get; set; }
     public string Type { get; set; }
     public string Payload { get; set; }
+    public Guid CorrelationId { get; set; }
 }

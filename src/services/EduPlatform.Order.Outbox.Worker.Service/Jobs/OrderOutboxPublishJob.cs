@@ -26,7 +26,7 @@ public class OrderOutboxPublishJob(IOrderOutboxRepository orderOutboxRepository,
                 orderOutboxRepository.Update(orderOutbox);
                 await unitOfWork.CommitAsync();
             }
-            await Console.Out.WriteLineAsync($" {orderCreatedEvent.OrderCode} orderCreatedEvent published.");
+            await Console.Out.WriteLineAsync($" CorrelationId: {orderCreatedEvent.CorrelationId} - OrderCode {orderCreatedEvent.OrderCode} orderCreatedEvent published.");
         }
        
     }

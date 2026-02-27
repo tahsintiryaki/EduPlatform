@@ -6,6 +6,7 @@ using EduPlatform.Order.Application.UnitOfWork;
 using EduPlatform.Order.Domain.Entities;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace EduPlatform.Order.Application.Consumers;
 
@@ -13,7 +14,7 @@ public class UpdateOrderStatusOnPaymentSucceededEventConsumer(
     IPublishEndpoint publishEndpoint,
     IPaymentInboxRepository paymentInboxRepository,
     IOrderRepository orderRepository,
-    IUnitOfWork unitOfWork)
+    IUnitOfWork unitOfWork, ILogger<UpdateOrderStatusOnPaymentSucceededEventConsumer> logger)
     : IConsumer<PaymentSucceededEvent>
 {
     public async Task Consume(ConsumeContext<PaymentSucceededEvent> context)
@@ -44,7 +45,7 @@ public class UpdateOrderStatusOnPaymentSucceededEventConsumer(
             OrderStatus.Paid);
         paymentInbox.Processed = true;
         paymentInbox.ProcessDate = DateTime.UtcNow;
-        Console.WriteLine($"{context.Message.OrderCode} order status updated");
+        Console.WriteLine($"CorrelationId:{context.Message.CorrelationId}- OrderCode: {context.Message.OrderCode} order status updated");
         await unitOfWork.CommitAsync();
     }
 }

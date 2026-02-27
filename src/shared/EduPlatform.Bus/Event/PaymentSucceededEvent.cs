@@ -1,3 +1,8 @@
 namespace EduPlatform.Bus.Event;
 
-public record PaymentSucceededEvent(Guid IdempotentToken, string OrderCode,Guid PaymentId,Guid UserId);
+public record PaymentSucceededEvent(
+    Guid IdempotentToken,
+    string OrderCode,
+    Guid PaymentId,
+    Guid UserId,
+    Guid CorrelationId) : ICorrelationId;

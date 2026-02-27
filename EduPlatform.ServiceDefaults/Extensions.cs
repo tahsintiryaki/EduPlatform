@@ -51,6 +51,12 @@ public static class Extensions
             logging.IncludeFormattedMessage = true;
             logging.IncludeScopes = true;
         });
+        builder.Logging.AddSimpleConsole(o =>
+        {
+            o.IncludeScopes = true;
+            o.SingleLine = true;
+            o.TimestampFormat = "yyyy-MM-ddTHH:mm:ss ";
+        });
 
         builder.Services.AddOpenTelemetry()
             .WithMetrics(metrics =>
