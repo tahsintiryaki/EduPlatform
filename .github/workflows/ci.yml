@@ -1,0 +1,29 @@
+name: CI — Build & Test
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 9
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore
+        run: dotnet restore EduPlatform.sln
+
+      - name: Build
+        run: dotnet build EduPlatform.sln --no-restore --configuration Release
+
+      - name: Run Unit Tests
+        run: dotnet test src/services/Eduplatform.Order.API.Test --no-build --configuration Release --verbosity normal
