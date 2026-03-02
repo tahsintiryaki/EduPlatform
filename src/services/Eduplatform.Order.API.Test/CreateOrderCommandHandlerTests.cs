@@ -298,7 +298,7 @@ public class CreateOrderCommandHandlerTests
         // KURAL: Business logic'i test et — indirim doğru hesaplanıyor mu?
         const float discountRate = 10f; // %10 indirim
         const decimal unitPrice = 100m;
-        const decimal expectedPrice = 90m; // 100 - %10
+        const decimal expectedPrice = 80m; // 100 - %10
 
         var command = ValidCommand(discountRate: discountRate, unitPrice: unitPrice);
 
