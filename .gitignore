@@ -3,3 +3,37 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+
+# =========================
+# Visual Studio
+# =========================
+.vs/
+*.suo
+*.user
+*.rsuser
+*.vsidx
+
+# =========================
+# NuGet / .NET build artifacts
+# =========================
+project.assets.json
+project.nuget.cache
+*.nuget.g.props
+*.nuget.g.targets
+*.nuget.dgspec.json
+
+# =========================
+# Generated build files
+# =========================
+apphost.exe
+staticwebassets.removed.txt
+*.staticwebassets.runtime.json
+*.AssemblyInfo.cs
+*.GlobalUsings.g.cs
+*.GeneratedMSBuildEditorConfig.editorconfig
+
+# =========================
+# Logs / cache
+# =========================
+*.cache
+*.log
